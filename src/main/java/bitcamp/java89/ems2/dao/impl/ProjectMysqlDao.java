@@ -30,7 +30,7 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setTitle(rs.getString("titl"));
         project.setStartDate(rs.getString("sdt"));
         project.setEndDate(rs.getString("edt"));
-        project.setProjectNo(Integer.parseInt(rs.getString("pjno")));
+        project.setProjectNo(Integer.parseInt(rs.getString("pjno"))); // 회원이름으로 변경 필요
         
         list.add(project);
       }
