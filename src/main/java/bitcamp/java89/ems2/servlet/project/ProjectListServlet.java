@@ -46,7 +46,7 @@ public class ProjectListServlet extends HttpServlet {
 //      list.add(p);
       
       for (Project project : list) {
-        out.printf("<h1><a href='detail?projectNo=%d'>%s</a></h1>\n", project.getProjectNo(), project.getTitle());
+        out.printf("<h1><a href='detail?projectNo='>%s</a></h1>\n", project.getProjectNo(), project.getTitle());
         //out.printf("<h5>%s</h5>\n", ); //등록일 필요 -> proj_memb 상속 필요
         //out.printf("<h5>%s</h5>\n", ); //팀장이름 필요 -> memb 상속 필요
         out.printf("<h3>시작일 [%s]</h3>\n", project.getStartDate());
