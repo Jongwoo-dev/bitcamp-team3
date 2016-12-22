@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
+import bitcamp.java89.ems2.domain.Student;
 import bitcamp.java89.ems2.util.DataSource;
 
 public class ProjectMysqlDao implements ProjectDao {
@@ -42,5 +43,40 @@ public class ProjectMysqlDao implements ProjectDao {
     }
     return list;
   }
+  
+  public Project getone(int projectNo) throws Exception {
+    Connection con = ds.getConnection();
+    try (
+        PreparedStatement stmt = con.prepareStatement(
+            "select");) { // 수정해야 함
+      
+        stmt.setInt(1, projectNo);
+        ResultSet rs = stmt.executeQuery();
+        // 수정해야함 getTitle
+        if (rs.next()) { //프로젝트이름,등록일,조회수,시작일,종료일,팀원,내용,태그
+          Project project = new Project();
+          project.setProjectNo(projectNo);
+        //project.setRegisterDate(rs.getString("registerDate");
+        //project.setViewCount(rs.getString("viewCount");
+          project.setStartDate(rs.getString("startDate"));
+          project.setEndDate(rs.getString("endDate"));
+          project.setContents(rs.getString("contents"));
+          rs.close();
+          return project;
+          
+        } else {
+          rs.close();
+          return null;
+        }
+      } finally {
+        ds.returnConnection(con);
+      }
+  }
+  
+  
+  
+  
+  
+  
   
 }
