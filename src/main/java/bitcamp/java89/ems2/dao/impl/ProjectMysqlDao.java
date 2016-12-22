@@ -22,8 +22,8 @@ public class ProjectMysqlDao implements ProjectDao {
     
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select titl,sdt,edt,memb.name "
-          + "from proj left outer join proj_memb on proj.pjno=proj_memb.pjno "
+          "select titl,conts,sdt,edt,memb.name "
+          + "from proj left outer join proj_memb on proj.pjno=proj_memb.pjno and proj_memb.rol='팀장'"
           + "left outer join memb on proj_memb.mno=memb.mno");
       ResultSet rs = stmt.executeQuery(); ){
       
@@ -32,6 +32,7 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setTitle(rs.getString("titl"));
         project.setStartDate(rs.getString("sdt"));
         project.setEndDate(rs.getString("edt"));
+        project.setContents(rs.getString("conts"));
         //project.setProjectNo(Integer.parseInt(rs.getString("pjno"))); //회원이름으로 변경 필요
         
         list.add(project);

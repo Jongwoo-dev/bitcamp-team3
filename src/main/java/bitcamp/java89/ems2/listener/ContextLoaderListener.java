@@ -9,6 +9,7 @@ import javax.servlet.ServletContextListener;
 
 import bitcamp.java89.ems2.dao.impl.ManagerMysqlDao;
 import bitcamp.java89.ems2.dao.impl.MemberMysqlDao;
+import bitcamp.java89.ems2.dao.impl.ProjectMysqlDao;
 import bitcamp.java89.ems2.dao.impl.StudentMysqlDao;
 import bitcamp.java89.ems2.dao.impl.TeacherMysqlDao;
 import bitcamp.java89.ems2.util.DataSource;
@@ -38,6 +39,10 @@ public class ContextLoaderListener implements ServletContextListener {
       StudentMysqlDao studentDao = new StudentMysqlDao();
       studentDao.setDataSource(ds);
       sc.setAttribute("studentDao", studentDao);
+      
+      ProjectMysqlDao projectDao = new ProjectMysqlDao();
+      projectDao.setDataSource(ds);
+      sc.setAttribute("projectDao", projectDao);
       
       System.out.println("ContextLoaderListener.init() 실행 완료!");
       

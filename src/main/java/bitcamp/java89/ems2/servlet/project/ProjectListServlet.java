@@ -35,7 +35,8 @@ public class ProjectListServlet extends HttpServlet {
       
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
-      out.println("<button><a href='form.html'>프로젝트생성</a></button>");
+      
+      out.println("<h1><a href='form.html'>프로젝트생성</a></h1>");
       
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       ArrayList<Project> list = projectDao.getList();
@@ -46,7 +47,7 @@ public class ProjectListServlet extends HttpServlet {
 //      list.add(p);
       
       for (Project project : list) {
-        out.printf("<h1><a href='detail?projectNo='>%s</a></h1>\n", project.getProjectNo(), project.getTitle());
+        out.printf("<h2><a href='detail?projectTitle='>%s</a></h2>\n", project.getTitle());
         //out.printf("<h5>%s</h5>\n", ); //등록일 필요 -> proj_memb 상속 필요
         //out.printf("<h5>%s</h5>\n", ); //팀장이름 필요 -> memb 상속 필요
         out.printf("<h3>시작일 [%s]</h3>\n", project.getStartDate());
