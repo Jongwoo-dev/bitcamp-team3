@@ -36,45 +36,23 @@ public class ProjectListServlet extends HttpServlet {
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
       
-      out.println("<h1><a href='form.html'>프로젝트생성</a></h1>");
+      out.println("<button style='margin-top:5px; float:right;'><a href='form.html'>프로젝트생성</a></button>");
       
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       ArrayList<Project> list = projectDao.getList();
-// test용 코딩...
-//      ArrayList<Project> list = null;
-//      Project p = new Project();
-//      p.setProjectNo(1); p.setTitle("t1"); p.setStartDate("2016-11-20"); p.setEndDate("2016-12-31"); p.setContents("c1");
-//      list.add(p);
       
       for (Project project : list) {
-        out.printf("<h2><a href='detail?projectTitle='>%s</a></h2>\n", project.getTitle());
-        //out.printf("<h5>%s</h5>\n", ); //등록일 필요 -> proj_memb 상속 필요
-        //out.printf("<h5>%s</h5>\n", ); //팀장이름 필요 -> memb 상속 필요
-        out.printf("<h3>시작일 [%s]</h3>\n", project.getStartDate());
-        out.printf("<h3>종료일 [%s]</h3>\n", project.getEndDate());
-        out.printf("<p style='color:gray;'>%s</p>\n", project.getContents());
+        out.println("<div style='background-color:#F5F5F5; margin-top:40px;'>");
+        out.printf("<h2><a href='detail?projectTitle='>%s</a></h2>", project.getTitle());
+        out.printf("<h4 style='float:right;'>등록일 [%s]</h4>\n", project.getRegisterDate());
+        out.printf("<h4 style='float:right;'>작성자 [%s]</h4>\n", project.getName());
+        out.printf("<h4 style='margin-left:50px;'>시작일 [%s]</h4>\n", project.getStartDate());
+        out.printf("<h4 style='margin-left:50px;'>종료일 [%s]</h4>\n", project.getEndDate());
         out.println("태그 내용 출력");
-      }
-
-      /*
-       * 기존 표 출력
-      out.println("<table border='1'>");
-      out.println("<tr>");
-      out.println("  <th>프로젝트명</th>");
-      out.println("  <th>시작일</th>");
-      out.println("  <th>종료일</th>");
-      out.println("  <th>일련번호</th>");
-      out.println("</tr>");
-      
-      for (Project project : list) {
-        out.println("<tr> ");
-        out.printf("<td><a href='detail?projectNo=%1$s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td>\n",
-          project.getTitle(), project.getStartDate(), project.getEndDate(), project.getProjectNo());
-        out.println("</tr>");
+        out.println("</div>");
+        out.println("<hr>");
       }
       
-      out.println("</table>");
-      */
       rd = request.getRequestDispatcher("/footer");
       rd.include(request, response);
       
