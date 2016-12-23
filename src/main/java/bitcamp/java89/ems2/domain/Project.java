@@ -1,7 +1,8 @@
 package bitcamp.java89.ems2.domain;
 
-public class Project {
-
+public class Project extends Content {
+  private static final long serialVersionUID = 1L;
+  
   protected int projectNo;
   protected String title;
   protected String contents;
