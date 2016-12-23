@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
-import bitcamp.java89.ems2.domain.Student;
 import bitcamp.java89.ems2.util.DataSource;
 
 public class ProjectMysqlDao implements ProjectDao {
