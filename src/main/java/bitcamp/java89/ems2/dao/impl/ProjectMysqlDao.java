@@ -52,7 +52,7 @@ public class ProjectMysqlDao implements ProjectDao {
         stmt.setInt(1, projectNo);
         ResultSet rs = stmt.executeQuery();
         
-        // 프로젝트이름,등록일,조회수,시작일,종료일,팀원,내용,태그
+        // 프로젝트이름,등록일,조회수,시작일,종료일,팀원,(역할),내용,태그
         if (rs.next()) { 
           Project project = new Project();
           project.setProjectNo(projectNo);
@@ -62,8 +62,17 @@ public class ProjectMysqlDao implements ProjectDao {
           project.setEndDate(rs.getString("endDate"));
           project.setContents(rs.getString("contents"));
           rs.close();
-          return project;
           
+          /*
+          arraylist<string> projMembsName = getProjectMember(pjno)
+          poject.setmembernamelist(projMembsName)
+          
+          ArrayList<String> members = project.getMemberNameList();
+          for(String name : members) {
+            System.out.println(name);
+          }
+          return project;
+          */
         } else {
           rs.close();
           return null;
