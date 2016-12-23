@@ -2,15 +2,15 @@ package bitcamp.java89.ems2.domain;
 
 public class Content extends Member {
   private static final long serialVersionUID = 1L;
-  protected int contentsNo;
+  protected int contentNo;
   protected String registerDate;
   protected int viewCount;
   
-  public int getContentsNo() {
-    return contentsNo;
+  public int getContentNo() {
+    return contentNo;
   }
-  public void setContentsNo(int contentsNo) {
-    this.contentsNo = contentsNo;
+  public void setContentNo(int contentNo) {
+    this.contentNo = contentNo;
   }
   public String getRegisterDate() {
     return registerDate;

@@ -51,18 +51,28 @@ public class ProjectMysqlDao implements ProjectDao {
       
         stmt.setInt(1, projectNo);
         ResultSet rs = stmt.executeQuery();
-        // 수정해야함 getTitle
-        if (rs.next()) { //프로젝트이름,등록일,조회수,시작일,종료일,팀원,내용,태그
+        
+        // 프로젝트이름,등록일,조회수,시작일,종료일,팀원,(역할),내용,태그
+        if (rs.next()) { 
           Project project = new Project();
           project.setProjectNo(projectNo);
-        //project.setRegisterDate(rs.getString("registerDate");
-        //project.setViewCount(rs.getString("viewCount");
+          project.setRegisterDate(rs.getString("registerDate"));
+          project.setViewCount(Integer.parseInt(rs.getString("viewCount")));
           project.setStartDate(rs.getString("startDate"));
           project.setEndDate(rs.getString("endDate"));
           project.setContents(rs.getString("contents"));
           rs.close();
-          return project;
           
+          /*
+          arraylist<string> projMembsName = getProjectMember(pjno)
+          poject.setmembernamelist(projMembsName)
+          
+          ArrayList<String> members = project.getMemberNameList();
+          for(String name : members) {
+            System.out.println(name);
+          }
+          return project;
+          */
         } else {
           rs.close();
           return null;
