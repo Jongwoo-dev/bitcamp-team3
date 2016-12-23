@@ -12,7 +12,7 @@
 			<div id='title' style='height: 80px;'>
 				<!-- 프로젝트명 들어갈자리 -->
 
-				<input name='projectname' type='text' placeholder='프로젝트 이름'
+				<input name='projectName' type='text' placeholder='프로젝트 이름'
 					style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px;'>
 			</div>
 			<div id='predata' style='height: 110px;'>
@@ -35,10 +35,10 @@
 							style='margin: 10px; padding: 2px; font-size: 18px; vertical-align: middle; border-radius: 5px;'>
 					</div>
 				</div>
+				<!-- 팀원선택버튼 -->
 				<div id='teamselect'
 					style='float: right; height: 100px; width: 200px'>
-					<button type=button
-						style='margin: 10px; height: 80px; width: 180px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'>팀원선택</button>
+					<input type='button' value='팀원선택' onclick="location.href='../proj_memb/list'" style='margin: 10px; height: 80px; width: 180px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'>
 				</div>
 			</div>
 
@@ -65,13 +65,13 @@
 					style='float: right; margin: 10px; height: 60px; width: 280px;'>
 					<!-- 등록버튼 취소버튼 -->
 					<div style='float: left; margin: 10px; height: 40px; width: 120px;'>
-						<button type=button
+						<button type='submit'
 							style='height: 40px; width: 120px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'>등록</button>
 					</div>
 					<div
 						style='float: right; margin: 10px; height: 40px; width: 120px;'>
-						<button type=button
-							style='height: 40px; width: 120px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'>취소</button>
+						<input type='button' value='취소' onclick="location.href='list'"
+							style='height: 40px; width: 120px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'>
 					</div>
 				</div>
 			</div>
