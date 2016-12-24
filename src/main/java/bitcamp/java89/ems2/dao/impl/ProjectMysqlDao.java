@@ -145,15 +145,27 @@ public class ProjectMysqlDao implements ProjectDao {
     }
   }
   
-    
+  
   public void delete(int projectNo) throws Exception {
     Connection con = ds.getConnection();
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "delete from proj_memb where pjno=?; delete from proj where pjno=?"); )
+          "delete from proj where pjno=?"); )
     {
       stmt.setInt(1, projectNo);
-      stmt.setInt(2, projectNo);
+      stmt.executeUpdate();
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+  
+  public void deleteContent(int contentNo) throws Exception {
+    Connection con = ds.getConnection();
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "delete from content where cono=?"); )
+    {
+      stmt.setInt(1, contentNo);
       stmt.executeUpdate();
     } finally {
       ds.returnConnection(con);
