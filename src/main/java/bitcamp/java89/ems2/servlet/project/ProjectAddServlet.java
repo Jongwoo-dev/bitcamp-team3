@@ -10,11 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bitcamp.java89.ems2.dao.MemberDao;
-import bitcamp.java89.ems2.dao.StudentDao;
-import bitcamp.java89.ems2.domain.Member;
+import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
-import bitcamp.java89.ems2.domain.Student;
 
 @WebServlet("/project/add")
 public class ProjectAddServlet extends HttpServlet {
@@ -30,19 +27,6 @@ public class ProjectAddServlet extends HttpServlet {
       project.setEndDate(request.getParameter("projectEndDate"));
       project.setContents(request.getParameter("textContents"));
       
-      
-      //** 여기하는중
-      
-      Student student = new Student();
-      student.setEmail(request.getParameter("email"));
-      student.setPassword(request.getParameter("password"));
-      student.setName(request.getParameter("name"));
-      student.setTel(request.getParameter("tel"));
-      student.setWorking(Boolean.parseBoolean(request.getParameter("working")));
-      student.setGrade(request.getParameter("grade"));
-      student.setSchoolName(request.getParameter("schoolName"));
-      student.setPhotoPath(request.getParameter("photoPath"));
-      
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
   
@@ -51,7 +35,7 @@ public class ProjectAddServlet extends HttpServlet {
       out.println("<head>");
       out.println("<meta charset='UTF-8'>");
       out.println("<meta http-equiv='Refresh' content='1;url=list'>");
-      out.println("<title>학생관리-등록</title>");
+      out.println("<title>프로젝트관리-등록</title>");
       out.println("</head>");
       out.println("<body>");
       
@@ -61,23 +45,17 @@ public class ProjectAddServlet extends HttpServlet {
       
       out.println("<h1>등록 결과</h1>");
     
-      StudentDao studentDao = (StudentDao)this.getServletContext().getAttribute("studentDao");
-    
-      if (studentDao.exist(student.getEmail())) {
-        throw new Exception("같은 학생의 이메일이 존재합니다. 등록을 취소합니다.");
-      }
+      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       
-      MemberDao memberDao = (MemberDao)this.getServletContext().getAttribute("memberDao");
+      // 원랜 ContentDao 를 읽어와서 그쪽 인서트 메서드로 입력 구현을 해야하나 그쪽이 완료가 안된 관계로
+      // 일단은 ProjectDao에서 구현함. 추후 ContentDao로 구현이 되면 content insert 부분 교체 
+      //ContentDao contentDao = (ContentDao)this.getServletContext().getAttribute("contentDao");
       
-      if (!memberDao.exist(student.getEmail())) { // 강사나 매니저로 등록되지 않았다면,
-        memberDao.insert(student);
-        
-      } else { // 강사나 매니저로 이미 등록된 사용자라면 기존의 회원 번호를 사용한다.
-        Member member = memberDao.getOne(student.getEmail());
-        student.setMemberNo(member.getMemberNo());
-      }
+      //*임시로 유저는 user02@test.com 으로. 
+      project.setMemberNo(2);
+      projectDao.insertContent(project);
       
-      studentDao.insert(student);
+      projectDao.insert(project);
       out.println("<p>등록하였습니다.</p>");
       
       // FooterServlet에게 꼬리말 HTML 생성을 요청한다.

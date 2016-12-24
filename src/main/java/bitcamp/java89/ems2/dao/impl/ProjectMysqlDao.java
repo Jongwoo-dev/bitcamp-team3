@@ -3,9 +3,11 @@ package bitcamp.java89.ems2.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
+import bitcamp.java89.ems2.domain.Content;
 import bitcamp.java89.ems2.domain.Project;
 import bitcamp.java89.ems2.util.DataSource;
 
@@ -71,8 +73,8 @@ public class ProjectMysqlDao implements ProjectDao {
           for(String name : members) {
             System.out.println(name);
           }
-          return project;
           */
+          return project;
         } else {
           rs.close();
           return null;
@@ -82,9 +84,43 @@ public class ProjectMysqlDao implements ProjectDao {
       }
   }
   
+  public void insert(Project project) throws Exception {
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "insert into proj(pjno,titl,conts,sdt,edt) values(?,?,?,?,?)"); ) {
+      
+      stmt.setInt(1, project.getContentNo());
+      stmt.setString(2, project.getTitle());
+      stmt.setString(3, project.getContents());
+      stmt.setString(4, project.getStartDate());
+      stmt.setString(5, project.getEndDate());
+      stmt.executeUpdate();
+
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
   
-  
-  
+  public void insertContent(Content content) throws Exception {
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "insert into content(mno,rdt,vw_cnt) values(?,now(),0)",
+          Statement.RETURN_GENERATED_KEYS); ) {
+      
+      stmt.setInt(1, content.getMemberNo());
+      stmt.executeUpdate();
+      
+      ResultSet keyRS = stmt.getGeneratedKeys();
+      keyRS.next();
+      content.setContentNo(keyRS.getInt(1));
+      keyRS.close();
+
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
   
   
   
