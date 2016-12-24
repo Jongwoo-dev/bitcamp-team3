@@ -1,5 +1,7 @@
 package bitcamp.java89.ems2.domain;
 
+import java.util.ArrayList;
+
 public class Project extends Content {
   private static final long serialVersionUID = 1L;
   
@@ -8,6 +10,8 @@ public class Project extends Content {
   protected String contents;
   protected String startDate;
   protected String endDate;
+  protected ArrayList<String> projectMemberList;
+  
   public int getProjectNo() {
     return projectNo;
   }
@@ -37,6 +41,12 @@ public class Project extends Content {
   }
   public void setEndDate(String endDate) {
     this.endDate = endDate;
+  }
+  public ArrayList<String> getProjectMemberList() {
+    return projectMemberList;
+  }
+  public void setProjectMemberList(ArrayList<String> projectMemberList) {
+    this.projectMemberList = projectMemberList;
   }
   
 }

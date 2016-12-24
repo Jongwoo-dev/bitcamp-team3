@@ -43,17 +43,47 @@ public class ProjectDetailServlet extends HttpServlet {
       
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       
-      //Project project = projectDao.getOne(projectNo);  // 수정해야함
-      /*
+      Project project = projectDao.getOne(projectNo);
+      
       if (project == null) {
         throw new Exception("해당 프로젝트가 없습니다.");
       }
-      */
+      // 수정중
       out.println("<table border='1'>");
-      // 수정해야 함
+      out.printf("<tr><th>프로젝트명</th><td>"
+          + "<input name='title' type='text' value='%s'></td></tr>\n", 
+          project.getTitle());
+      out.printf("<tr><th>등록일</th><td>"
+          + "<input name='registerDate' type='text' value='%s'></td></tr>\n", 
+          project.getRegisterDate());
+      out.printf("<tr><th>조회수</th><td>"
+          + "<input name='viewCount' type='text' value='%s'></td></tr>\n", 
+          project.getViewCount());
+      out.printf("<tr><th>시작일</th><td>"
+          + "<input name='startDate' type='text' value='%s'></td></tr>\n", 
+          project.getStartDate());
+      out.printf("<tr><th>종료일</th><td>"
+          + "<input name='endDate' type='text' value='%s'></td></tr>\n", 
+          project.getEndDate());
       
+      ArrayList<String> members = project.getProjectMemberList();
       
+      String memb1 = members.get(0);
+      String memb2 = members.get(1);
+      String memb3 = members.get(2);
+      String memb4 = members.get(3);
       
+      out.printf("<tr><th>프로젝트멤버</th><td>"
+          + "<input name='projectMember' type='text' value='%s,%s,%s,%s'></td></tr>\n", 
+          memb1, memb2, memb3, memb4);
+      out.printf("<tr><th>내용</th><td>"
+          + "<input name='contents' type='text' value='%s'></td></tr>\n", 
+          project.getContents());
+      out.println("</table>");
+      
+      out.println("<button type='submit'>변경</button>");
+      out.printf(" <a href='delete?projectNo=%s'>삭제</a>\n", project.getProjectNo());
+      out.printf("<input type='hidden' name='projectNo' value='%d'>\n", project.getProjectNo());
       
       out.println(" <a href='list'>목록</a>");
       out.println("</form>");

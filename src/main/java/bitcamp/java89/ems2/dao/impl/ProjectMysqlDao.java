@@ -67,43 +67,61 @@ public class ProjectMysqlDao implements ProjectDao {
     return list;
   }
   
-  public Project getone(int projectNo) throws Exception {
+  public Project getOne(int projectNo) throws Exception {
+    Connection con = ds.getConnection();
+    ArrayList<String> projMembName = getProjectMemberByProjectNumber(projectNo);
+    try (
+        PreparedStatement stmt = con.prepareStatement(
+            " select titl, rdt, vw_cnt, sdt, edt, name, conts"
+            + " from proj"
+            + " left outer join content on proj.pjno=content.cono"
+            + " left outer join memb on content.mno=memb.mno"
+       + " where pjno=?");) {
+      
+      stmt.setInt(1, projectNo);
+      ResultSet rs = stmt.executeQuery();
+        
+      // 프로젝트이름,등록일,조회수,시작일,종료일,프로젝트멤버,(역할),내용,(태그)
+      if (rs.next()) { 
+        Project project = new Project();
+        project.setProjectNo(projectNo);
+        project.setTitle(rs.getString("title"));
+        project.setRegisterDate(rs.getString("registerDate"));
+        project.setViewCount(Integer.parseInt(rs.getString("viewCount")));
+        project.setStartDate(rs.getString("startDate"));
+        project.setEndDate(rs.getString("endDate"));
+        project.setProjectMemberList(projMembName);
+        project.setContents(rs.getString("contents"));
+        rs.close();
+        return project;
+        
+      } else {
+        rs.close();
+        return null;
+      }
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+  // getone(int projectNo) 에서 사용할 ArrayList
+  public ArrayList<String> getProjectMemberByProjectNumber(int projectNo) throws Exception {
+    ArrayList<String> projectMember = new ArrayList<>();;
     Connection con = ds.getConnection();
     try (
         PreparedStatement stmt = con.prepareStatement(
-            "select");) { // 수정해야 함
+            " select proj_memb.mno, name" +
+            " from proj_memb" +
+            " left outer join memb on memb.mno=proj_memb.mno" +
+            " where pjno=?");
+        ResultSet rs = stmt.executeQuery(); ){
       
-        stmt.setInt(1, projectNo);
-        ResultSet rs = stmt.executeQuery();
-        
-        // 프로젝트이름,등록일,조회수,시작일,종료일,팀원,(역할),내용,태그
-        if (rs.next()) { 
-          Project project = new Project();
-          project.setProjectNo(projectNo);
-          project.setRegisterDate(rs.getString("registerDate"));
-          project.setViewCount(Integer.parseInt(rs.getString("viewCount")));
-          project.setStartDate(rs.getString("startDate"));
-          project.setEndDate(rs.getString("endDate"));
-          project.setContents(rs.getString("contents"));
-          rs.close();
-          
-          /*
-          arraylist<string> projMembsName = getProjectMember(pjno)
-          poject.setmembernamelist(projMembsName)
-          
-          ArrayList<String> members = project.getMemberNameList();
-          for(String name : members) {
-            System.out.println(name);
-          }
-          return project;
-          */
-        } else {
-          rs.close();
-          return null;
-        }
-      } finally {
-        ds.returnConnection(con);
+      while (rs.next()) {
+        projectMember.add(rs.getString("name"));
       }
+    } finally {
+      ds.returnConnection(con);
+    }
+    return projectMember;
   }
   
   public void delete(int projectNo) throws Exception {
@@ -119,7 +137,5 @@ public class ProjectMysqlDao implements ProjectDao {
       ds.returnConnection(con);
     }
   }
-  
-  
-  
+
 }
