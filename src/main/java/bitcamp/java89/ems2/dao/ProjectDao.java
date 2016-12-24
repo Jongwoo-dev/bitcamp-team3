@@ -11,7 +11,7 @@ public interface ProjectDao {
   Project getOne(int projectNo) throws Exception;
   void insert(Project project) throws Exception;
   void delete(int projectNo) throws Exception;
-  
+  void update(Project project) throws Exception;
   
   //아래부분은 임시로 쓰는거. 나중에 다른Dao들 구현 다 되면 삭제할 메서드들.
   void insertContent(Content content) throws Exception;

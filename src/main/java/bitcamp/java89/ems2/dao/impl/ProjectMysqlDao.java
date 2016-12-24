@@ -197,5 +197,26 @@ public class ProjectMysqlDao implements ProjectDao {
       ds.returnConnection(con);
     }
   }
+  
+  public void update(Project project) throws Exception {
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "update proj set"
+          + " titl=?, conts=?, sdt=?, edt=?"
+          + " where pjno=?"); ) {
+      
+      stmt.setString(1, project.getTitle());
+      stmt.setString(2, project.getContents());
+      stmt.setString(3, project.getStartDate());
+      stmt.setString(4, project.getEndDate());
+      stmt.setInt(5, project.getContentNo());
+      
+      stmt.executeUpdate();
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
 
 }
