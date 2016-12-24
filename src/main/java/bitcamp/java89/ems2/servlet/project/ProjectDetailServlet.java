@@ -39,7 +39,7 @@ public class ProjectDetailServlet extends HttpServlet {
       rd.include(request, response);
       
       out.println("<h1>프로젝트 정보</h1>");
-      out.println("<form action='update' method='POST'>");
+      out.println("<form action='update' method='GET'>");
       
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       
