@@ -135,20 +135,7 @@ public class ProjectUpdateServlet extends HttpServlet {
       out.println("    </form>");
       out.println("    <hr>");
       out.println("  </div>");
-      /*
-      if (project == null) {
-        throw new Exception("해당 프로젝트가 없습니다.");
-      }
-      */
-      out.println("<table border='1'>");
-      // 수정해야 함
-      
-      
-      
-      
-      out.println(" <a href='list'>목록</a>");
-      out.println("</form>");
-      
+
       rd = request.getRequestDispatcher("/footer");
       rd.include(request, response);
       
