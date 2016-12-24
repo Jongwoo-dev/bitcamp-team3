@@ -16,13 +16,37 @@ public class ProjectMysqlDao implements ProjectDao {
     this.ds = ds;
   }
   
+  public boolean exist(int projectNo) throws Exception {
+    Connection con = ds.getConnection(); 
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "select count(*) from proj left outer join content on proj.pjno=content.cono where pjno=?"); ) {
+      
+      stmt.setInt(1, projectNo);
+      ResultSet rs = stmt.executeQuery();
+      
+      rs.next();
+      int count = rs.getInt(1);
+      rs.close();
+      
+      if (count > 0) {
+        return true;
+      } else {
+        return false;
+      }
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+  } 
+  
   public ArrayList<Project> getList() throws Exception {
     ArrayList<Project> list = new ArrayList<>();
     Connection con = ds.getConnection();
     
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select pjno,titl,conts,sdt,edt,memb.name" 
+          "select pjno,titl,sdt,edt,rdt,memb.name" 
           + " from proj left outer join content on proj.pjno=content.cono"
           + " left outer join memb on content.mno=memb.mno");
       ResultSet rs = stmt.executeQuery(); ){
@@ -32,8 +56,8 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setTitle(rs.getString("titl"));
         project.setStartDate(rs.getString("sdt"));
         project.setEndDate(rs.getString("edt"));
-        project.setContents(rs.getString("conts"));
-        //project.setProjectNo(Integer.parseInt(rs.getString("pjno"))); //회원이름으로 변경 필요
+        project.setRegisterDate(rs.getString("rdt"));
+        project.setName(rs.getString("name"));
         
         list.add(project);
       }
@@ -85,7 +109,7 @@ public class ProjectMysqlDao implements ProjectDao {
   public void delete(int projectNo) throws Exception {
     Connection con = ds.getConnection();
     try (
-      PreparedStatement stmt = con.prepareStatement("delete from proj where pjno=?"); )
+      PreparedStatement stmt = con.prepareStatement("delete from proj left outer join proj_memb on proj.pjno=proj_memb.pjno where pjno=?"); )
     {
       stmt.setInt(1, projectNo);
       stmt.executeUpdate();
