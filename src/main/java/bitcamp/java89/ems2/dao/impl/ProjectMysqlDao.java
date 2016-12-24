@@ -55,6 +55,8 @@ public class ProjectMysqlDao implements ProjectDao {
       
       while (rs.next()) {
         Project project = new Project();
+        project.setContentNo(rs.getInt("pjno"));
+        project.setProjectNo(rs.getInt("pjno"));
         project.setTitle(rs.getString("titl"));
         project.setStartDate(rs.getString("sdt"));
         project.setEndDate(rs.getString("edt"));

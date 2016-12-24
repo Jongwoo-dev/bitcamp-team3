@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
 
-@WebServlet("/project/detail")
+@WebServlet("/project/update")
 public class ProjectUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
