@@ -109,9 +109,11 @@ public class ProjectMysqlDao implements ProjectDao {
   public void delete(int projectNo) throws Exception {
     Connection con = ds.getConnection();
     try (
-      PreparedStatement stmt = con.prepareStatement("delete from proj left outer join proj_memb on proj.pjno=proj_memb.pjno where pjno=?"); )
+      PreparedStatement stmt = con.prepareStatement(
+          "delete from proj_memb where pjno=?; delete from proj where pjno=?"); )
     {
       stmt.setInt(1, projectNo);
+      stmt.setInt(2, projectNo);
       stmt.executeUpdate();
     } finally {
       ds.returnConnection(con);
