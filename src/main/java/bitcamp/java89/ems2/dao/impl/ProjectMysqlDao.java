@@ -119,8 +119,10 @@ public class ProjectMysqlDao implements ProjectDao {
             " select proj_memb.mno, name" +
                 " from proj_memb" +
                 " left outer join memb on memb.mno=proj_memb.mno" +
-            " where pjno=?");
-        ResultSet rs = stmt.executeQuery(); ){
+            " where pjno=?"); ){
+        
+        stmt.setInt(1, projectNo);
+        ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
         projectMember.add(rs.getString("name"));
