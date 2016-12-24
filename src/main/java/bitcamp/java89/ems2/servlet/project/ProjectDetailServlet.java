@@ -67,15 +67,15 @@ public class ProjectDetailServlet extends HttpServlet {
           project.getEndDate());
       
       ArrayList<String> members = project.getProjectMemberList();
-      
-      String memb1 = members.get(0);
-      String memb2 = members.get(1);
-      String memb3 = members.get(2);
-      String memb4 = members.get(3);
-      
       out.printf("<tr><th>프로젝트멤버</th><td>"
-          + "<input name='projectMember' type='text' value='%s,%s,%s,%s'></td></tr>\n", 
-          memb1, memb2, memb3, memb4);
+          + "<input name='projectMember' type='text' value='");
+      if (members.size() != 0) {
+        out.print(members.get(0));
+        for (int i = 1; i < members.size(); i++) {
+          out.printf(",%s", members.get(i));
+        }
+      }
+      out.println("'></td></tr>");
       out.printf("<tr><th>내용</th><td>"
           + "<input name='contents' type='text' value='%s'></td></tr>\n", 
           project.getContents());

@@ -43,9 +43,6 @@ public class ProjectUpdateServlet extends HttpServlet {
       out.println("<h1>프로젝트 정보</h1>");
       out.println("<form action='update' method='POST'>");
       
-      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
-      
-      //Project project = projectDao.getOne(projectNo);  // 수정해야함
       /*
       if (project == null) {
         throw new Exception("해당 프로젝트가 없습니다.");
@@ -76,7 +73,10 @@ public class ProjectUpdateServlet extends HttpServlet {
   }
   
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     // doPost 메서드에는 dao로 업데이트명령을 호출.
+
+    //ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+    
   }
 }
