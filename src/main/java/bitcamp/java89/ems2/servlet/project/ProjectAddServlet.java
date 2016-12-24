@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.dao.ProjectDao;
+import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.domain.Project;
 
 @WebServlet("/project/add")
@@ -26,6 +28,8 @@ public class ProjectAddServlet extends HttpServlet {
       project.setStartDate(request.getParameter("projectStartDate"));
       project.setEndDate(request.getParameter("projectEndDate"));
       project.setContents(request.getParameter("textContents"));
+      
+      String writerUserEmail = request.getParameter("userEmail");
       
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
@@ -51,8 +55,16 @@ public class ProjectAddServlet extends HttpServlet {
       // 일단은 ProjectDao에서 구현함. 추후 ContentDao로 구현이 되면 content insert 부분 교체 
       //ContentDao contentDao = (ContentDao)this.getServletContext().getAttribute("contentDao");
       
-      //*임시로 유저는 user02@test.com 으로. 
-      project.setMemberNo(2);
+      // 해당 유저가 존재하는지 체크
+      MemberDao memberDao = (MemberDao)this.getServletContext().getAttribute("memberDao");
+      if (!memberDao.exist(writerUserEmail)) { 
+        // 작성자가 존재하지 않는다면
+        throw new Exception("작성자의 아이디가 존재하지 않습니다.");
+      } 
+      
+      // 작성자가 존재하면 해당 이메일의 멤버번호로 프로젝트 등록자를 설정 
+      Member writer = memberDao.getOne(writerUserEmail);
+      project.setMemberNo(writer.getMemberNo());
       projectDao.insertContent(project);
       
       projectDao.insert(project);
