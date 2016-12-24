@@ -2,7 +2,6 @@ package bitcamp.java89.ems2.servlet.project;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,16 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
-import bitcamp.java89.ems2.domain.Project;
 
-@WebServlet("/project/list")
-public class ProjectListServlet extends HttpServlet {
+@WebServlet("/project/delete")
+public class ProjectDeleteServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
     try {
+      int projectNo = Integer.parseInt(request.getParameter("projectNo"));
+      
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
   
@@ -29,29 +29,30 @@ public class ProjectListServlet extends HttpServlet {
       out.println("<html>");
       out.println("<head>");
       out.println("<meta charset='UTF-8'>");
-      out.println("<title>프로젝트관리-목록</title>");
+      out.println("<meta http-equiv='Refresh' content='1;url=list'>");
+      out.println("<title>프로젝트관리-삭제</title>");
       out.println("</head>");
       out.println("<body>");
       
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
       
-      out.println("<button style='margin-top:5px; float:right;'><a href='form.html'>프로젝트생성</a></button>");
+      out.println("<h1>삭제 결과</h1>");
       
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
-      ArrayList<Project> list = projectDao.getList();
       
-      for (Project project : list) {
-        out.println("<div style='background-color:#F5F5F5; margin-top:40px;'>");
-        out.printf("<h2><a href='detail?projectNo=%d'>%s</a></h2>", project.getProjectNo(), project.getTitle());
-        out.printf("<h4 style='float:right;'>등록일 [%s]</h4>\n", project.getRegisterDate());
-        out.printf("<h4 style='float:right;'>작성자 [%s]</h4>\n", project.getName());
-        out.printf("<h4 style='margin-left:50px;'>시작일 [%s]</h4>\n", project.getStartDate());
-        out.printf("<h4 style='margin-left:50px;'>종료일 [%s]</h4>\n", project.getEndDate());
-        out.println("태그 내용 출력");
-        out.println("</div>");
-        out.println("<hr>");
+      if (!projectDao.exist(projectNo)) {
+        throw new Exception("프로젝트를 찾지 못했습니다.");
       }
+      
+//      ContentDao contentDao = (ContentDao)this.getServletContext().getAttribute("contentDao");
+//      Proj_MembDao proj_MembDao = (Proj_MembDao)this.getServletContext().getAttribute("proj_MembDao");
+//      if (!contentDao.exist(projectNo) && !proj_MembDao.exist(projectNo)) {
+//        proj_MembDao.delete(projectNo);
+//        contentDao.delete(projectNo);
+//      }
+      
+      out.println("<p>삭제하였습니다.</p>");
       
       rd = request.getRequestDispatcher("/footer");
       rd.include(request, response);

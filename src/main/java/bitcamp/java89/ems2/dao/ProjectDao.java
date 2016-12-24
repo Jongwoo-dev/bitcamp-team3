@@ -6,6 +6,7 @@ import bitcamp.java89.ems2.domain.Content;
 import bitcamp.java89.ems2.domain.Project;
 
 public interface ProjectDao {
+  boolean exist(int projectNo) throws Exception;
   ArrayList<Project> getList() throws Exception;
   Project getone(int projectNo) throws Exception;
   void insert(Project project) throws Exception;
