@@ -15,12 +15,13 @@ import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
 
 @WebServlet("/project/detail")
-public class ProjectDetailServlet extends HttpServlet {
+public class ProjectUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
+    // doGet 메서드에는 업데이트 입력 폼 생성
     try {
       int projectNo = Integer.parseInt(request.getParameter("projectNo"));
       
@@ -31,59 +32,30 @@ public class ProjectDetailServlet extends HttpServlet {
       out.println("<html>");
       out.println("<head>");
       out.println("<meta charset='UTF-8'>");
-      out.println("<title>프로젝트관리-상세정보</title>");
+      out.println("<title>프로젝트관리-업데이트</title>");
       out.println("</head>");
       out.println("<body>");
       
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
       
+      // * 여기서부터 html 코드?
       out.println("<h1>프로젝트 정보</h1>");
       out.println("<form action='update' method='POST'>");
       
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       
-      Project project = projectDao.getOne(projectNo);
-      
+      //Project project = projectDao.getOne(projectNo);  // 수정해야함
+      /*
       if (project == null) {
         throw new Exception("해당 프로젝트가 없습니다.");
       }
-      // 수정중
+      */
       out.println("<table border='1'>");
-      out.printf("<tr><th>프로젝트명</th><td>"
-          + "<input name='title' type='text' value='%s'></td></tr>\n", 
-          project.getTitle());
-      out.printf("<tr><th>등록일</th><td>"
-          + "<input name='registerDate' type='text' value='%s'></td></tr>\n", 
-          project.getRegisterDate());
-      out.printf("<tr><th>조회수</th><td>"
-          + "<input name='viewCount' type='text' value='%s'></td></tr>\n", 
-          project.getViewCount());
-      out.printf("<tr><th>시작일</th><td>"
-          + "<input name='startDate' type='text' value='%s'></td></tr>\n", 
-          project.getStartDate());
-      out.printf("<tr><th>종료일</th><td>"
-          + "<input name='endDate' type='text' value='%s'></td></tr>\n", 
-          project.getEndDate());
+      // 수정해야 함
       
-      ArrayList<String> members = project.getProjectMemberList();
       
-      String memb1 = members.get(0);
-      String memb2 = members.get(1);
-      String memb3 = members.get(2);
-      String memb4 = members.get(3);
       
-      out.printf("<tr><th>프로젝트멤버</th><td>"
-          + "<input name='projectMember' type='text' value='%s,%s,%s,%s'></td></tr>\n", 
-          memb1, memb2, memb3, memb4);
-      out.printf("<tr><th>내용</th><td>"
-          + "<input name='contents' type='text' value='%s'></td></tr>\n", 
-          project.getContents());
-      out.println("</table>");
-      
-      out.println("<button type='submit'>변경</button>");
-      out.printf(" <a href='delete?projectNo=%s'>삭제</a>\n", project.getProjectNo());
-      out.printf("<input type='hidden' name='projectNo' value='%d'>\n", project.getProjectNo());
       
       out.println(" <a href='list'>목록</a>");
       out.println("</form>");
@@ -101,5 +73,10 @@ public class ProjectDetailServlet extends HttpServlet {
       return;
     }
     
+  }
+  
+  @Override
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    // doPost 메서드에는 dao로 업데이트명령을 호출.
   }
 }

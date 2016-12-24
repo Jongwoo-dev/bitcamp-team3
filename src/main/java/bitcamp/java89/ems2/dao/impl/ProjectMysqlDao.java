@@ -68,21 +68,21 @@ public class ProjectMysqlDao implements ProjectDao {
     }
     return list;
   }
-  
+
   public Project getOne(int projectNo) throws Exception {
     Connection con = ds.getConnection();
     ArrayList<String> projMembName = getProjectMemberByProjectNumber(projectNo);
     try (
         PreparedStatement stmt = con.prepareStatement(
             " select titl, rdt, vw_cnt, sdt, edt, name, conts"
-            + " from proj"
-            + " left outer join content on proj.pjno=content.cono"
-            + " left outer join memb on content.mno=memb.mno"
-       + " where pjno=?");) {
-      
+                + " from proj"
+                + " left outer join content on proj.pjno=content.cono"
+                + " left outer join memb on content.mno=memb.mno"
+                + " where pjno=?");) {
+
       stmt.setInt(1, projectNo);
       ResultSet rs = stmt.executeQuery();
-        
+
       // 프로젝트이름,등록일,조회수,시작일,종료일,프로젝트멤버,(역할),내용,(태그)
       if (rs.next()) { 
         Project project = new Project();
@@ -96,7 +96,7 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setContents(rs.getString("contents"));
         rs.close();
         return project;
-        
+
       } else {
         rs.close();
         return null;
@@ -106,26 +106,28 @@ public class ProjectMysqlDao implements ProjectDao {
     }
   }
 
-//getOne(int projectNo) 에서 사용할 ArrayList
+
+
+  //getOne(int projectNo) 에서 사용할 ArrayList
   public ArrayList<String> getProjectMemberByProjectNumber(int projectNo) throws Exception {
-   ArrayList<String> projectMember = new ArrayList<>();;
-   Connection con = ds.getConnection();
-   try (
-       PreparedStatement stmt = con.prepareStatement(
-           " select proj_memb.mno, name" +
-           " from proj_memb" +
-           " left outer join memb on memb.mno=proj_memb.mno" +
-           " where pjno=?");
-       ResultSet rs = stmt.executeQuery(); ){
-     
-     while (rs.next()) {
-       projectMember.add(rs.getString("name"));
-     }
-   } finally {
-     ds.returnConnection(con);
-   }
-   return projectMember;
- }
+    ArrayList<String> projectMember = new ArrayList<>();;
+    Connection con = ds.getConnection();
+    try (
+        PreparedStatement stmt = con.prepareStatement(
+            " select proj_memb.mno, name" +
+                " from proj_memb" +
+                " left outer join memb on memb.mno=proj_memb.mno" +
+            " where pjno=?");
+        ResultSet rs = stmt.executeQuery(); ){
+
+      while (rs.next()) {
+        projectMember.add(rs.getString("name"));
+      }
+    } finally {
+      ds.returnConnection(con);
+    }
+    return projectMember;
+  }
 
   
   public void insert(Project project) throws Exception {
