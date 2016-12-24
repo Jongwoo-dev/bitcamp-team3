@@ -89,13 +89,13 @@ public class ProjectMysqlDao implements ProjectDao {
       if (rs.next()) { 
         Project project = new Project();
         project.setProjectNo(projectNo);
-        project.setTitle(rs.getString("title"));
-        project.setRegisterDate(rs.getString("registerDate"));
-        project.setViewCount(Integer.parseInt(rs.getString("viewCount")));
-        project.setStartDate(rs.getString("startDate"));
-        project.setEndDate(rs.getString("endDate"));
+        project.setTitle(rs.getString("titl"));
+        project.setRegisterDate(rs.getString("rdt"));
+        project.setViewCount(Integer.parseInt(rs.getString("vw_cnt")));
+        project.setStartDate(rs.getString("sdt"));
+        project.setEndDate(rs.getString("edt"));
         project.setProjectMemberList(projMembName);
-        project.setContents(rs.getString("contents"));
+        project.setContents(rs.getString("conts"));
         rs.close();
         return project;
 
