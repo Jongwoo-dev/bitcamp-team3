@@ -36,22 +36,45 @@ public class ProjectListServlet extends HttpServlet {
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
       
-      out.println("<button style='margin-top:5px; float:right;'><a href='form.html'>프로젝트생성</a></button>");
+      out.println("<div id='container' style='width: 800px'>");
+      out.println("<div style='margin-top: 30px;float: right;'>");
+      //<!-- 프로젝트 생성 버튼 -->
+      out.println("<input type='button' value='프로젝트 생성' onclick=\"location.href='form.html'\"");
+      out.println("          style='height: 50px; width: 200px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'></input>");
+      out.println("</div>");
+      out.println("<div style='height: 30px;clear:both;'>");
+      out.println("</div>");
+      out.println("<hr>");
       
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       ArrayList<Project> list = projectDao.getList();
       
       for (Project project : list) {
-        out.println("<div style='background-color:#F5F5F5; margin-top:40px;'>");
-        out.printf("<h2><a href='detail?projectNo=%d'>%s</a></h2>", project.getProjectNo(), project.getTitle());
-        out.printf("<h4 style='float:right;'>등록일 [%s]</h4>\n", project.getRegisterDate());
-        out.printf("<h4 style='float:right;'>작성자 [%s]</h4>\n", project.getName());
-        out.printf("<h4 style='margin-left:50px;'>시작일 [%s]</h4>\n", project.getStartDate());
-        out.printf("<h4 style='margin-left:50px;'>종료일 [%s]</h4>\n", project.getEndDate());
-        out.println("태그 내용 출력");
+        
+        out.println("<div style='background-color:#F5F5F5; padding: 20px; width: 700px; margin: 30px'>");
+        //<!-- 프로젝트 -->
+        out.println("<div style='float: left; font-size: 36px; font-weight: bold; width: 530px; height: 80px;'>");
+        //<!-- 프로젝트 제목 -->
+        out.printf("<a href='detail?projectNo=%d' >%s</a>\n", project.getProjectNo(), project.getTitle());
+        out.println("</div>");
+        out.println("<div style='float: right; font-size: 16px; font-weight: bold; width: 170px; height: 80px;'>");
+        //<!-- 등록일 글쓴이 -->
+        out.printf("등록일 [%s]<br>\n", project.getRegisterDate().split(" ")[0]);
+        out.printf("글쓴이 [%s]\n", project.getName());
+        out.println("    </div>");
+        out.println("<div style='margin-left: 40px; font-size: 18px; font-weight: bold;'>");
+        //<!-- 시작일 종료일 -->
+        out.printf("시작일 [%s]<br>", project.getStartDate());
+        out.printf("종료일 [%s]", project.getEndDate());
+        out.println("    </div>");
+        out.println("<div style='font-size: 14px; font-weight: bold; margin-top: 10px;'>");
+        //<!-- 태그 -->
+        out.println("#태그 미지원");
+        out.println("</div>");
         out.println("</div>");
         out.println("<hr>");
       }
+      out.println("</div>");
       
       rd = request.getRequestDispatcher("/footer");
       rd.include(request, response);

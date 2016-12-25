@@ -59,7 +59,7 @@ public class ProjectDetailServlet extends HttpServlet {
       out.println("    <div style='float: right'>");
       //<!-- 작성자 들어갈자리 -->
       out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 16px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
-      out.printf("        등록일 [ %s ]</span> <br>\n", project.getRegisterDate());
+      out.printf("        등록일 [ %s ]</span> <br>\n", project.getRegisterDate().split(" ")[0]);
       out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 16px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
       out.printf("        조회수 %s</span>\n", project.getViewCount());
       out.println("    </div>");
