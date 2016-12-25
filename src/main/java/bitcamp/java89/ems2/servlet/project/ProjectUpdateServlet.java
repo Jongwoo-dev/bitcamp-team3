@@ -22,14 +22,17 @@ public class ProjectUpdateServlet extends HttpServlet {
       throws ServletException, IOException {
     // doGet 메서드에는 업데이트 입력 폼 생성
     try {
+      
       int projectNo = Integer.parseInt(request.getParameter("projectNo"));
-      String title = request.getParameter("title");
-      //String registerDate = request.getParameter("registerDate");
-      //String viewCount = request.getParameter("viewCount");
-      String startDate = request.getParameter("startDate");
-      String endDate = request.getParameter("endDate");
       String projectMembers = request.getParameter("projectMember");
-      String contents = request.getParameter("contents");
+      
+      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+      Project project = projectDao.getOne(projectNo);
+
+      String title = project.getTitle();
+      String startDate = project.getStartDate();
+      String endDate = project.getEndDate();
+      String contents = project.getContents();
       
       // 어디서 넘어왔는지.
       String referer = request.getHeader("Referer");

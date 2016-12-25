@@ -23,6 +23,7 @@ public class ProjectDetailServlet extends HttpServlet {
       throws ServletException, IOException {
     try {
       int projectNo = Integer.parseInt(request.getParameter("projectNo"));
+      String projectMembers = "";
       
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
@@ -84,10 +85,11 @@ public class ProjectDetailServlet extends HttpServlet {
       
       ArrayList<String> members = project.getProjectMemberList();
       if (members.size() != 0) {
-        out.print(members.get(0));
+        projectMembers += members.get(0);
         for (int i = 1; i < members.size(); i++) {
-          out.printf(", %s", members.get(i));
+          projectMembers += ", " + members.get(i);
         }
+        out.println(projectMembers);
       }
       out.println(" ]</span>");
       
@@ -119,6 +121,7 @@ public class ProjectDetailServlet extends HttpServlet {
       out.println("    </div>");
       out.println("  </div>");
       out.printf("<input type='hidden' name='projectNo' value='%d'>\n", project.getProjectNo());
+      out.printf("<input type='hidden' name='projectMember' value='%s'>\n", projectMembers);
       out.println("</form>");
       out.println("<hr>");
       out.println("</div>");
