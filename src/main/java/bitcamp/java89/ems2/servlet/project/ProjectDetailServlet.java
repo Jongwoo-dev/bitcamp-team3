@@ -37,10 +37,7 @@ public class ProjectDetailServlet extends HttpServlet {
       
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
-      
-      out.println("<h1>프로젝트 정보</h1>");
-      out.println("<form action='update' method='GET'>");
-      
+            
       ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
       
       Project project = projectDao.getOne(projectNo);
@@ -48,45 +45,83 @@ public class ProjectDetailServlet extends HttpServlet {
       if (project == null) {
         throw new Exception("해당 프로젝트가 없습니다.");
       }
-      // 수정중
-      out.println("<table border='1'>");
-      out.printf("<tr><th>프로젝트명</th><td>"
-          + "<input name='title' type='text' value='%s'></td></tr>\n", 
-          project.getTitle());
-      out.printf("<tr><th>등록일</th><td>"
-          + "<input name='registerDate' type='text' value='%s'></td></tr>\n", 
-          project.getRegisterDate());
-      out.printf("<tr><th>조회수</th><td>"
-          + "<input name='viewCount' type='text' value='%s'></td></tr>\n", 
-          project.getViewCount());
-      out.printf("<tr><th>시작일</th><td>"
-          + "<input name='startDate' type='text' value='%s'></td></tr>\n", 
-          project.getStartDate());
-      out.printf("<tr><th>종료일</th><td>"
-          + "<input name='endDate' type='text' value='%s'></td></tr>\n", 
-          project.getEndDate());
+      
+      out.println("<div id='container' style='width: 800px'>");
+      out.println("<form action='update' method='GET'>");
+      out.println("  <div style='height: 70px'></div>");
+      out.println("  <div id='title' style='height: 80px;'>");
+      out.println("    <div style='float: left'>");
+      //<!-- 프로젝트명 들어갈자리 -->
+      out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
+      out.printf("        %s</span>\n", project.getTitle());
+      out.println("    </div>");
+      out.println("    <div style='float: right'>");
+      //<!-- 작성자 들어갈자리 -->
+      out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 16px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
+      out.printf("        등록일 [ %s ]</span> <br>\n", project.getRegisterDate());
+      out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 16px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
+      out.printf("        조회수 %s</span>\n", project.getViewCount());
+      out.println("    </div>");
+      out.println("  </div>");
+      out.println("  <div id='predata' style='height: 110px;'>");
+      //<!-- 시작일 종료일 -->
+      out.println("    <div id='startdate' style='margin-left: 10px; height: 30px;'>");
+      //<!-- 시작일 -->
+      out.println("      <span style='display: table-col; vertical-align: middle; font-size: 18px; font-weight: bold; margin: 10px;'>시작일</span>");
+      out.println("      <span style='display: table-col; vertical-align: middle; font-size: 18px; font-weight: bold; margin: 10px;'>");
+      out.printf("      [ %s ]</span>\n", project.getStartDate());
+      out.println("    </div>");
+      out.println("    <div id='enddate' style='margin-left: 10px; height: 50px;'>");
+      //<!-- 종료일 -->
+      out.println("      <span style='display: table-col; vertical-align: middle; font-size: 18px; font-weight: bold; margin: 10px;'>종료일</span>");
+      out.println("      <span style='display: table-col; vertical-align: middle; font-size: 18px; font-weight: bold; margin: 10px;'>");
+      out.printf("      [ %s ]</span>\n", project.getEndDate());
+      out.println("    </div>");
+      out.println("    <div id='writer' style='margin-left: 10px; height: 30px;'>");
+      //<!-- 팀원 목록 -->
+      out.println("      <span style='display: table-col; vertical-align: middle; font-size: 18px; font-weight: bold; margin: 10px;'>");
+      out.print("      프로젝트 멤버 [ ");
       
       ArrayList<String> members = project.getProjectMemberList();
-      out.printf("<tr><th>프로젝트멤버</th><td>"
-          + "<input name='projectMember' type='text' value='");
       if (members.size() != 0) {
         out.print(members.get(0));
         for (int i = 1; i < members.size(); i++) {
-          out.printf(",%s", members.get(i));
+          out.printf(", %s", members.get(i));
         }
       }
-      out.println("'></td></tr>");
-      out.printf("<tr><th>내용</th><td>"
-          + "<input name='contents' type='text' value='%s'></td></tr>\n", 
-          project.getContents());
-      out.println("</table>");
+      out.println(" ]</span>");
       
-      out.println("<button type='submit'>변경</button>");
-      out.printf(" <a href='delete?projectNo=%s'>삭제</a>\n", project.getProjectNo());
+      out.println("    </div>");
+      out.println("  </div>");
+      out.println("  <div id='content' style='height: 320px;'>");
+      //<!-- 내용 -->
+      out.println("    <div style='margin: 10px; background-color: #e0e0e0; height: 300px;'>");
+      out.println("      <div style='width: 740px; font-size: 16px; padding: 20px;'>");
+      out.println(project.getContents());
+      out.println("      </div>");
+      out.println("    </div>");
+      out.println("  </div>");
+      out.println("  <div id='postdata' style='height: 80px;'>");
+      //<!-- 태그입력 등록버튼 취소버튼 -->
+      out.println("    <div id='projectdate' style='float: left; margin: 10px; height: 60px; width: 320px;'>");
+      //<!-- 태그입력-->
+      out.println("      <span style='display: table-col; vertical-align: middle; font-size: 14px; font-weight: bold; margin: 10px;'>");
+      out.println("      #태그기능은 아직 지원하지 않습니다.</span>");
+      out.println("    </div>");
+      out.println("    <div id='projectdate' style='float: right; margin: 10px; height: 60px; width: 420px;'>");
+      //<!-- 등록버튼 취소버튼 -->
+      out.printf("      <input type='button' value='삭제' onclick=\"location.href='delete?projectNo=%s'\"\n", project.getProjectNo());
+      out.println("        style='height: 40px; width: 120px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; margin-right: 20px; border-radius: 5px;'></input>");
+      out.println("      <button type='submit' ");
+      out.println("        style='height: 40px; width: 120px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; margin-right: 20px; border-radius: 5px;'>수정</button>");
+      out.println("      <input type='button' value='목록' onclick=\"location.href='list'\"");
+      out.println("        style='height: 40px; width: 120px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'></input>");
+      out.println("    </div>");
+      out.println("  </div>");
       out.printf("<input type='hidden' name='projectNo' value='%d'>\n", project.getProjectNo());
-      
-      out.println(" <a href='list'>목록</a>");
       out.println("</form>");
+      out.println("<hr>");
+      out.println("</div>");
       
       rd = request.getRequestDispatcher("/footer");
       rd.include(request, response);
