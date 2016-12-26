@@ -74,10 +74,10 @@ public class ClassroomMysqlDao implements ClassroomDao {
     ArrayList<ClassroomPhoto> croomPath = getClassroomPath(classroomNo);
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select croom.crmno, name"
+          "select croom.crmno, name,path"
           + " from croom"
           + " left outer join croom_phot on croom.crmno=croom_phot.crmno"
-          + " where crmno=?");) {
+          + " where croom.crmno=?");) {
 
       stmt.setInt(1, classroomNo);
       ResultSet rs = stmt.executeQuery();
