@@ -52,7 +52,7 @@ public class ClassroomDetailServlet extends HttpServlet {
       out.printf("<tr><th>이름</th><td>"
           + "<input name='name' type='text' value='%s'></td></tr>\n", 
           classroom.getName());
-      out.printf("<tr><th>사진1</th><td><input name='photoPath1' type='file'></td></tr>");
+      out.printf("<tr><th>사진1</th><td><img src='../upload/%s' style='height: 80px;'><input name='photoPath1' type='file'></td></tr>", classroom.getPathList().get(0).getPath());
       out.printf("<tr><th>사진2</th><td><input name='photoPath2' type='file'></td></tr>");
       out.printf("<tr><th>사진3</th><td><input name='photoPath3' type='file'></td></tr>");
       

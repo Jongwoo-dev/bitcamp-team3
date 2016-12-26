@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
 import bitcamp.java89.ems2.domain.ClassroomPhoto;
-import bitcamp.java89.ems2.domain.Student;
 import bitcamp.java89.ems2.util.DataSource;
 
 public class ClassroomMysqlDao implements ClassroomDao {
@@ -74,17 +73,16 @@ public class ClassroomMysqlDao implements ClassroomDao {
     ArrayList<ClassroomPhoto> croomPath = getClassroomPath(classroomNo);
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select croom.crmno, name,path"
+          "select name"
           + " from croom"
-          + " left outer join croom_phot on croom.crmno=croom_phot.crmno"
-          + " where croom.crmno=?");) {
+          + " where crmno=?");) {
 
       stmt.setInt(1, classroomNo);
       ResultSet rs = stmt.executeQuery();
 
       if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
         Classroom classroom = new Classroom();
-        classroom.setClassroomNo(rs.getInt(classroomNo));
+        classroom.setClassroomNo(classroomNo);
         classroom.setName(rs.getString("name"));
         classroom.setPathList(croomPath);
         rs.close();
@@ -99,25 +97,28 @@ public class ClassroomMysqlDao implements ClassroomDao {
     }
   } 
   public ArrayList<ClassroomPhoto> getClassroomPath(int classroomNo) throws Exception {
-    ArrayList<ClassroomPhoto> classroomPath = new ArrayList<>();;
+    ArrayList<ClassroomPhoto> classroomPathList = new ArrayList<>();;
     Connection con = ds.getConnection();
     try (
         PreparedStatement stmt = con.prepareStatement(
             " select cpno, path" +
                 " from croom_phot" +
-                " left outer join croom on croom.crmno=croom_phot.crmno" +
-            " where croom.crmno=?"); ){
+                " where crmno=?"); ){
         
         stmt.setInt(1, classroomNo);
         ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) { // 잘 모르겠는 부분
-        classroomPath.add((ClassroomPhoto) rs.getObject("classroomPhoto"));
+        ClassroomPhoto croomPhoto = new ClassroomPhoto();
+        croomPhoto.setClassroomNo(classroomNo);
+        croomPhoto.setClassroomPhotoNo(rs.getInt("cpno"));
+        croomPhoto.setPath(rs.getString("path"));
+        classroomPathList.add(croomPhoto);
       }
     } finally {
       ds.returnConnection(con);
     }
-    return classroomPath;
+    return classroomPathList;
   }
   
 
