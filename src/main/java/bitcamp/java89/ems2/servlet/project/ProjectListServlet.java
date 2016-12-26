@@ -55,7 +55,7 @@ public class ProjectListServlet extends HttpServlet {
         //<!-- 프로젝트 -->
         out.println("<div style='float: left; font-size: 36px; font-weight: bold; width: 530px; height: 80px;'>");
         //<!-- 프로젝트 제목 -->
-        out.printf("<a href='detail?projectNo=%d' >%s</a>\n", project.getProjectNo(), project.getTitle());
+        out.printf("<img src='C:/Users/BitCamp/git/bitcamp-team3/hand.jpg'><a href='detail?projectNo=%d' >%s</a>\n", project.getProjectNo(), project.getTitle());
         out.println("</div>");
         out.println("<div style='float: right; font-size: 16px; font-weight: bold; width: 170px; height: 80px;'>");
         //<!-- 등록일 글쓴이 -->
@@ -83,6 +83,7 @@ public class ProjectListServlet extends HttpServlet {
       out.println("</html>");
       
     } catch (Exception e) {
+      e.printStackTrace();
       RequestDispatcher rd = request.getRequestDispatcher("/error");
       rd.forward(request, response);
       return;

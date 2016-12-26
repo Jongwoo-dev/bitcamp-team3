@@ -2,6 +2,7 @@ package bitcamp.java89.ems2.servlet.project;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.domain.Project;
+import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/project/add")
 public class ProjectAddServlet extends HttpServlet {
@@ -23,16 +25,20 @@ public class ProjectAddServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
     try {
-      Project project = new Project();
-      project.setTitle(request.getParameter("projectName"));
-      project.setStartDate(request.getParameter("projectStartDate"));
-      project.setEndDate(request.getParameter("projectEndDate"));
-      project.setContents(request.getParameter("textContents"));
+      Map<String,String> dataMap = MultipartUtil.parse(request);
       
-      String writerUserEmail = request.getParameter("userEmail");
+      Project project = new Project();
+      project.setTitle(dataMap.get("projectName"));
+      project.setStartDate(dataMap.get("projectStartDate"));
+      project.setEndDate(dataMap.get("projectEndDate"));
+      project.setContents(dataMap.get("textContents"));
+      project.setLogoPath(dataMap.get("logoPath"));
       
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
+      
+      
+      String writerUserEmail = dataMap.get("userEmail");
   
       out.println("<!DOCTYPE html>");
       out.println("<html>");

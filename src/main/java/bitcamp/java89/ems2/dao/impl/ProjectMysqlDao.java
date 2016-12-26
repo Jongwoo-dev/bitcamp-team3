@@ -48,7 +48,7 @@ public class ProjectMysqlDao implements ProjectDao {
     
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select pjno,titl,sdt,edt,rdt,memb.name,path" 
+          "select pjno,titl,sdt,edt,rdt,memb.name" 
           + " from proj left outer join content on proj.pjno=content.cono"
           + " left outer join memb on content.mno=memb.mno");
       ResultSet rs = stmt.executeQuery(); ){
@@ -62,7 +62,7 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setEndDate(rs.getString("edt"));
         project.setRegisterDate(rs.getString("rdt"));
         project.setName(rs.getString("name"));
-        project.setLogoPath(rs.getString("path"));
+        //project.setLogoPath(rs.getString("path"));
         
         list.add(project);
       }
@@ -140,13 +140,14 @@ public class ProjectMysqlDao implements ProjectDao {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "insert into proj(pjno,titl,conts,sdt,edt) values(?,?,?,?,?)"); ) {
+          "insert into proj(pjno,titl,conts,sdt,edt,path) values(?,?,?,?,?,?)"); ) {
       
       stmt.setInt(1, project.getContentNo());
       stmt.setString(2, project.getTitle());
       stmt.setString(3, project.getContents());
       stmt.setString(4, project.getStartDate());
       stmt.setString(5, project.getEndDate());
+      stmt.setString(6, project.getLogoPath());
       stmt.executeUpdate();
 
     } finally {
