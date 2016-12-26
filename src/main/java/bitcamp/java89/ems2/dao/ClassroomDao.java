@@ -12,4 +12,6 @@ public interface ClassroomDao {
   void insertClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception;
   void delete(int classroomNo) throws Exception;
   Classroom getOne(int classroomNo) throws Exception;
+  void update(Classroom classroom) throws Exception;
+  void updateClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception;
 }
