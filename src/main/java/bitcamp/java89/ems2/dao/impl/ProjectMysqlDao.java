@@ -139,13 +139,14 @@ public class ProjectMysqlDao implements ProjectDao {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "insert into proj(pjno,titl,conts,sdt,edt) values(?,?,?,?,?)"); ) {
+          "insert into proj(pjno,titl,conts,sdt,edt,path) values(?,?,?,?,?,?)"); ) {
       
       stmt.setInt(1, project.getContentNo());
       stmt.setString(2, project.getTitle());
       stmt.setString(3, project.getContents());
       stmt.setString(4, project.getStartDate());
       stmt.setString(5, project.getEndDate());
+      stmt.setString(6, project.getLogoPath());
       stmt.executeUpdate();
 
     } finally {
