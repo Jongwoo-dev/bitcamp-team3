@@ -179,6 +179,7 @@ public class ClassroomMysqlDao implements ClassroomDao {
   }
 
   @Override
+
   public void deletePhoto(int classroomNo) throws Exception {
     Connection con = ds.getConnection();
     try (
@@ -190,5 +191,41 @@ public class ClassroomMysqlDao implements ClassroomDao {
     } finally {
       ds.returnConnection(con);
     }
+  }
+
+  public void update(Classroom classroom) throws Exception {
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "update croom set"
+          + " name=?"
+          + " where crmno=?");) {
+      
+      stmt.setString(1, classroom.getName());
+      stmt.setInt(2, classroom.getClassroomNo());
+      stmt.executeUpdate();
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+
+  @Override
+  public void updateClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception {
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "update croom_phot set"
+          + " path=?"
+          + " where cpno=?");) {
+      
+      stmt.setString(1, classroomPhoto.getPath());
+      stmt.setInt(2, classroomPhoto.getClassroomPhotoNo());
+      stmt.executeUpdate();
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+    
   }
 }

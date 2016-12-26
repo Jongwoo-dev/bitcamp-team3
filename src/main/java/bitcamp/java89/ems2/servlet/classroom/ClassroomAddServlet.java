@@ -55,6 +55,7 @@ public class ClassroomAddServlet extends HttpServlet {
       out.println("<html>");
       out.println("<head>");
       out.println("<meta charset='UTF-8'>");
+      out.println("<meta http-equiv='Refresh' content='1;url=list'>");
       out.println("<title>강의실관리-등록</title>");
       out.println("</head>");
       out.println("<body>");

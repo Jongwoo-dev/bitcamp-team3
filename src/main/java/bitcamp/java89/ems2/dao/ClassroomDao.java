@@ -15,4 +15,6 @@ public interface ClassroomDao {
   
   //임시사용
   void deletePhoto(int classroomNo) throws Exception;
+  void update(Classroom classroom) throws Exception;
+  void updateClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception;
 }
