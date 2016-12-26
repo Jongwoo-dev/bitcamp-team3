@@ -3,6 +3,7 @@ package bitcamp.java89.ems2.servlet.classroom;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,17 +12,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.dao.TeacherDao;
+import bitcamp.java89.ems2.domain.Classroom;
+import bitcamp.java89.ems2.domain.ClassroomPhoto;
 import bitcamp.java89.ems2.domain.Teacher;
+import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/classroom/update")
 public class ClassroomUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
     try {
+      Map<String,String> dataMap = MultipartUtil.parse(request);
+      
+      Classroom classroom = new Classroom();
+      classroom.setClassroomNo(Integer.parseInt(dataMap.get("classroomNo")));
+      classroom.setName(dataMap.get("name"));
+      
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
   
@@ -29,7 +40,8 @@ public class ClassroomUpdateServlet extends HttpServlet {
       out.println("<html>");
       out.println("<head>");
       out.println("<meta charset='UTF-8'>");
-      out.println("<title>강의실-목록</title>");
+      out.println("<meta http-equiv='Refresh' content='1;url=list'>");
+      out.println("<title>강의실-변경</title>");
       out.println("</head>");
       out.println("<body>");
       
@@ -37,31 +49,20 @@ public class ClassroomUpdateServlet extends HttpServlet {
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
       
-      out.println("<h1>강의실 정보</h1>");
+      out.println("<h1>변경 결과</h1>");
+      ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
 
-      TeacherDao teacherDao = (TeacherDao)this.getServletContext().getAttribute("teacherDao");
-      ArrayList<Teacher> list = teacherDao.getList();
-
-      out.println("<a href='form.html'>추가</a><br>");
-      out.println("<table border='1'>");
-      out.println("<tr>");
-      out.println("  <th>번호</th>");
-      out.println("  <th>강의실이름</th>");
-      out.println("</tr>");
-      
-      for (Teacher teacher : list) {
-        out.println("<tr> ");
-        out.printf("  <td>%d</td>"
-            + "<td><a href='detail?classroomNo=%1$d'>%s</a></td>\n",
-          teacher.getMemberNo(),
-          teacher.getName(),
-          teacher.getTel(),
-          teacher.getEmail(),
-          teacher.getHomepage());
-        out.println("</tr>");
+      if (!classroomDao.exist(classroom.getClassroomNo())) {
+        throw new Exception("강의실을 찾지 못했습니다.");
       }
       
-      out.println("</table>");
+      classroomDao.update(classroom);
+      
+      for (ClassroomPhoto croomPhoto : classroom.getPathList()) {
+        classroomDao.updateClassroomPhoto(croomPhoto);
+      }
+      
+      out.println("<p>변경 하였습니다.</p>");
       
       // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
       rd = request.getRequestDispatcher("/footer");
@@ -71,6 +72,8 @@ public class ClassroomUpdateServlet extends HttpServlet {
       out.println("</html>");
       
     } catch (Exception e) {
+      request.setAttribute("error", e);
+      
       RequestDispatcher rd = request.getRequestDispatcher("/error");
       rd.forward(request, response);
       return;

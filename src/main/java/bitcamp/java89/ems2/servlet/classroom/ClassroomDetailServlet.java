@@ -39,7 +39,7 @@ public class ClassroomDetailServlet extends HttpServlet {
       rd.include(request, response);
       
       out.println("<h1>강의실 정보</h1>");
-      out.println("<form action='update' method='POST'>");
+      out.println("<form action='update' method='POST' enctype='multipart/form-data'>");
       
       ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
       Classroom classroom = classroomDao.getOne(classroomNo);
