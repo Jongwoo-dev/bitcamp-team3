@@ -18,6 +18,31 @@ public class ClassroomMysqlDao implements ClassroomDao {
     this.ds = ds;
   }
 
+  public boolean exist(int classroomNo) throws Exception {
+    Connection con = ds.getConnection(); 
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "select count(*)"
+          + " from croom left outer join croom_phot on croom.crmno=croom_phot.crmno"
+          + " where croom.crmno=?"); ) {
+      
+      stmt.setInt(1, classroomNo);
+      ResultSet rs = stmt.executeQuery();
+      
+      rs.next();
+      int count = rs.getInt(1);
+      rs.close();
+      
+      if (count > 0) {
+        return true;
+      } else {
+        return false;
+      }
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+  } 
 
   @Override
   public ArrayList<Classroom> getList() throws Exception {
