@@ -45,6 +45,8 @@ public class ClassroomDeleteServlet extends HttpServlet {
       if (!classroomDao.exist(classroomNo)) {
         throw new Exception("강의실을 찾지 못했습니다.");
       }
+      //임시사용
+      classroomDao.deletePhoto(classroomNo);
       
       classroomDao.delete(classroomNo);
       
