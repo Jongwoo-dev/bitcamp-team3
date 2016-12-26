@@ -206,14 +206,15 @@ public class ProjectMysqlDao implements ProjectDao {
     try (
       PreparedStatement stmt = con.prepareStatement(
           "update proj set"
-          + " titl=?, conts=?, sdt=?, edt=?"
+          + " titl=?, conts=?, sdt=?, edt=?, path=?"
           + " where pjno=?"); ) {
       
       stmt.setString(1, project.getTitle());
       stmt.setString(2, project.getContents());
       stmt.setString(3, project.getStartDate());
       stmt.setString(4, project.getEndDate());
-      stmt.setInt(5, project.getContentNo());
+      stmt.setString(5, project.getLogoPath());
+      stmt.setInt(6, project.getContentNo());
       
       stmt.executeUpdate();
       
