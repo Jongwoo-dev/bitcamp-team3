@@ -53,9 +53,13 @@ public class ProjectListServlet extends HttpServlet {
         
         out.println("<div style='background-color:#F5F5F5; padding: 20px; width: 700px; margin: 30px'>");
         //<!-- 프로젝트 -->
-        out.println("<div style='float: left; font-size: 36px; font-weight: bold; width: 530px; height: 80px;'>");
+        //<!-- 프로젝트 로고 -->
+        out.println("<div  style='width:60px; float:left;'>");
+        out.printf("<img src='%s' height='36px' style='background-color:blue; position:relative; margin-left:10px;'>", "../upload/"+project.getLogoPath());
+        out.println("</div>");
+        out.println("<div style='background-color:red; float:left; position:relative; padding-left:10px; font-size: 36px; font-weight: bold; width: 620px; height: 80px;'>");
         //<!-- 프로젝트 제목 -->
-        out.printf("<img src='C:/Users/BitCamp/git/bitcamp-team3/hand.jpg'><a href='detail?projectNo=%d' >%s</a>\n", project.getProjectNo(), project.getTitle());
+        out.printf("<a href='detail?projectNo=%d'>%s</a>\n", project.getProjectNo(), project.getTitle());
         out.println("</div>");
         out.println("<div style='float: right; font-size: 16px; font-weight: bold; width: 170px; height: 80px;'>");
         //<!-- 등록일 글쓴이 -->

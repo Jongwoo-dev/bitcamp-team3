@@ -48,7 +48,7 @@ public class ProjectMysqlDao implements ProjectDao {
     
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select pjno,titl,sdt,edt,rdt,memb.name" 
+          "select pjno,titl,sdt,edt,rdt,memb.name,path" 
           + " from proj left outer join content on proj.pjno=content.cono"
           + " left outer join memb on content.mno=memb.mno");
       ResultSet rs = stmt.executeQuery(); ){
@@ -62,7 +62,7 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setEndDate(rs.getString("edt"));
         project.setRegisterDate(rs.getString("rdt"));
         project.setName(rs.getString("name"));
-        //project.setLogoPath(rs.getString("path"));
+        project.setLogoPath(rs.getString("path"));
         
         list.add(project);
       }
