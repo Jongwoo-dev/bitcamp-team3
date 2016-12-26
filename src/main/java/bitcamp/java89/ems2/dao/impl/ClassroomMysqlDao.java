@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
+import bitcamp.java89.ems2.domain.ClassroomPhoto;
 import bitcamp.java89.ems2.util.DataSource;
 
 public class ClassroomMysqlDao implements ClassroomDao {
@@ -62,4 +63,28 @@ public class ClassroomMysqlDao implements ClassroomDao {
       ds.returnConnection(con);
     }
   }
+
+  @Override
+  public void insertClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception {
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "insert into croom_phot(crmno,path) values(?,?)",
+          Statement.RETURN_GENERATED_KEYS); ) {
+      
+      stmt.setInt(1, classroomPhoto.getClassroomNo());
+      stmt.setString(2, classroomPhoto.getPath());
+      stmt.executeUpdate();
+      
+      ResultSet keyRS = stmt.getGeneratedKeys();
+      keyRS.next();
+      classroomPhoto.setClassroomPhotoNo(keyRS.getInt(1));
+      keyRS.close();
+
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+  
+  
 }
