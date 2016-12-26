@@ -99,7 +99,7 @@ public class TeacherMysqlDao implements TeacherDao {
     Connection con = ds.getConnection(); 
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "insert into tcher(tno,hmpg,fcbk,twit) values(?,?,?,?)"); ) {
+          "insert into croom(name) values(?)"); ) {
       
       stmt.setInt(1, teacher.getMemberNo());
       stmt.setString(2, teacher.getHomepage());
