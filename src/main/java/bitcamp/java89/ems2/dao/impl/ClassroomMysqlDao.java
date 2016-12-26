@@ -169,9 +169,10 @@ public class ClassroomMysqlDao implements ClassroomDao {
     Connection con = ds.getConnection(); 
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "delete from croom where crmno=?"); ) {
+          "delete from croom_phot where crmno=?; delete from croom where crmno=?"); ) {
       
       stmt.setInt(1, classroomNo);
+      stmt.setInt(2, classroomNo);
       
       stmt.executeUpdate();
       
