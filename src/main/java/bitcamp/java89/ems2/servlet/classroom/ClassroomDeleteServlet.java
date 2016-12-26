@@ -2,7 +2,6 @@ package bitcamp.java89.ems2.servlet.classroom;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bitcamp.java89.ems2.dao.TeacherDao;
-import bitcamp.java89.ems2.domain.Teacher;
+import bitcamp.java89.ems2.dao.ClassroomDao;
 
 @WebServlet("/classroom/delete")
 public class ClassroomDeleteServlet extends HttpServlet {
@@ -22,6 +20,8 @@ public class ClassroomDeleteServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
     try {
+      int classroomNo = Integer.parseInt(request.getParameter("classroomNo"));
+      
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
   
@@ -29,7 +29,8 @@ public class ClassroomDeleteServlet extends HttpServlet {
       out.println("<html>");
       out.println("<head>");
       out.println("<meta charset='UTF-8'>");
-      out.println("<title>강의실-목록</title>");
+      out.println("<meta http-equiv='Refresh' content='1;url=list'>");
+      out.println("<title>강의실-삭제</title>");
       out.println("</head>");
       out.println("<body>");
       
@@ -37,33 +38,18 @@ public class ClassroomDeleteServlet extends HttpServlet {
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
       
-      out.println("<h1>강의실 정보</h1>");
+      out.println("<h1>삭제 결과</h1>");
 
-      TeacherDao teacherDao = (TeacherDao)this.getServletContext().getAttribute("teacherDao");
-      ArrayList<Teacher> list = teacherDao.getList();
+      ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
 
-      out.println("<a href='form.html'>추가</a><br>");
-      out.println("<table border='1'>");
-      out.println("<tr>");
-      out.println("  <th>번호</th>");
-      out.println("  <th>강의실이름</th>");
-      out.println("</tr>");
-      
-      for (Teacher teacher : list) {
-        out.println("<tr> ");
-        out.printf("  <td>%d</td>"
-            + "<td><a href='detail?classroomNo=%1$d'>%s</a></td>\n",
-          teacher.getMemberNo(),
-          teacher.getName(),
-          teacher.getTel(),
-          teacher.getEmail(),
-          teacher.getHomepage());
-        out.println("</tr>");
+      if (!classroomDao.exist(classroomNo)) {
+        throw new Exception("강의실을 찾지 못했습니다.");
       }
       
-      out.println("</table>");
+      classroomDao.delete(classroomNo);
       
-      // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
+      out.println("<p>삭제하였습니다.</p>");
+      
       rd = request.getRequestDispatcher("/footer");
       rd.include(request, response);
       
