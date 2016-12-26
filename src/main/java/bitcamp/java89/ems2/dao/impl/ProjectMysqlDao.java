@@ -77,7 +77,7 @@ public class ProjectMysqlDao implements ProjectDao {
     ArrayList<String> projMembName = getProjectMemberByProjectNumber(projectNo);
     try (
         PreparedStatement stmt = con.prepareStatement(
-            " select titl, rdt, vw_cnt, sdt, edt, name, conts"
+            " select titl, rdt, vw_cnt, sdt, edt, name, conts,path"
                 + " from proj"
                 + " left outer join content on proj.pjno=content.cono"
                 + " left outer join memb on content.mno=memb.mno"
@@ -97,6 +97,7 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setEndDate(rs.getString("edt"));
         project.setProjectMemberList(projMembName);
         project.setContents(rs.getString("conts"));
+        project.setLogoPath(rs.getString("path"));
         rs.close();
         return project;
 
