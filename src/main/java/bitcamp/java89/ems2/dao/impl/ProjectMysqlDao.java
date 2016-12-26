@@ -77,7 +77,7 @@ public class ProjectMysqlDao implements ProjectDao {
     ArrayList<String> projMembName = getProjectMemberByProjectNumber(projectNo);
     try (
         PreparedStatement stmt = con.prepareStatement(
-            " select titl, rdt, vw_cnt, sdt, edt, name, conts"
+            " select titl, rdt, vw_cnt, sdt, edt, name, conts,path"
                 + " from proj"
                 + " left outer join content on proj.pjno=content.cono"
                 + " left outer join memb on content.mno=memb.mno"
@@ -97,6 +97,7 @@ public class ProjectMysqlDao implements ProjectDao {
         project.setEndDate(rs.getString("edt"));
         project.setProjectMemberList(projMembName);
         project.setContents(rs.getString("conts"));
+        project.setLogoPath(rs.getString("path"));
         rs.close();
         return project;
 
@@ -205,14 +206,15 @@ public class ProjectMysqlDao implements ProjectDao {
     try (
       PreparedStatement stmt = con.prepareStatement(
           "update proj set"
-          + " titl=?, conts=?, sdt=?, edt=?"
+          + " titl=?, conts=?, sdt=?, edt=?, path=?"
           + " where pjno=?"); ) {
       
       stmt.setString(1, project.getTitle());
       stmt.setString(2, project.getContents());
       stmt.setString(3, project.getStartDate());
       stmt.setString(4, project.getEndDate());
-      stmt.setInt(5, project.getContentNo());
+      stmt.setString(5, project.getLogoPath());
+      stmt.setInt(6, project.getContentNo());
       
       stmt.executeUpdate();
       

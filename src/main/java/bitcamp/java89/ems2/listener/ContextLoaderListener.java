@@ -44,6 +44,10 @@ public class ContextLoaderListener implements ServletContextListener {
       projectDao.setDataSource(ds);
       sc.setAttribute("projectDao", projectDao);
       
+      ProjectMysqlDao classroomDao = new ProjectMysqlDao();
+      classroomDao.setDataSource(ds);
+      sc.setAttribute("classroomDao", classroomDao);
+      
       System.out.println("ContextLoaderListener.init() 실행 완료!");
       
     } catch (Exception e) {

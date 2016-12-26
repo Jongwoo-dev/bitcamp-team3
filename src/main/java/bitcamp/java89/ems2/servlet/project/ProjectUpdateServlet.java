@@ -2,6 +2,7 @@ package bitcamp.java89.ems2.servlet.project;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
+import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/project/update")
 public class ProjectUpdateServlet extends HttpServlet {
@@ -33,6 +35,7 @@ public class ProjectUpdateServlet extends HttpServlet {
       String startDate = project.getStartDate();
       String endDate = project.getEndDate();
       String contents = project.getContents();
+      String logoPath = project.getLogoPath();
       
       // 어디서 넘어왔는지.
       String referer = request.getHeader("Referer");
@@ -60,17 +63,28 @@ public class ProjectUpdateServlet extends HttpServlet {
       out.println("</head>");
       out.println("<body>");
       out.println("  <div id='container' style='width: 800px'>");
-      out.println("    <form action='update' method='POST'>");
+      out.println("    <form action='update' method='POST' enctype='multipart/form-data'>");
       out.println("      <div style='height: 70px'></div>");
-      out.println("      <div id='title' style='height: 80px;'>");
+      out.println("    <div style='float: left; margin-left: 10px;'>");
+      //<!-- 로고 들어갈자리 -->
+      out.printf("      <img src='../upload/%s' style='height: 80px;'>\n", logoPath);
+      out.println("    </div>");
+      out.println("      <div id='title' style='float: left; height: 80px;'>");
       // <!-- 프로젝트명 들어갈자리 -->
       out.printf("        <input name='projectName' type='text' placeholder='프로젝트 이름' value=%s\n", title);
-      out.println("          style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px;'>");
+      out.println("          style='width:350px; margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px;'>");
       out.println("      </div>");
-      out.println("      <div id='predata' style='height: 130px;'>");
+      
+      out.println("<div style='float: right; padding-top: 10px'>");
+      //<!-- 로고등록버튼 들어갈자리 -->
+      out.println("  <input name='logoPath' type='file' "); 
+      out.println("  style='margin: 10px; height: 40px; width: 180px;'>");
+      out.println("</div>");
+      out.println("      <div id='predata' style='clear:both; height: 130px;'>");
       // <!-- 시작일 종료일 팀원선택버튼 -->
       out.println("        <div id='projectdate'");
       out.println("          style='float: left; height: 100px; width: 600px;'>");
+      
       out.println("          <div id='startdate' style='margin: 10px; height: 30px;'>");
       // <!-- 시작일 -->
       out.println("            <span");
@@ -157,16 +171,19 @@ public class ProjectUpdateServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     // doPost 메서드에는 dao로 업데이트명령을 호출.
-
-    Project project = new Project();
-    project.setProjectNo(Integer.parseInt(request.getParameter("projectNo")));
-    project.setContentNo(Integer.parseInt(request.getParameter("projectNo")));
-    project.setTitle(request.getParameter("projectName"));
-    project.setStartDate(request.getParameter("projectStartDate"));
-    project.setEndDate(request.getParameter("projectEndDate"));
-    project.setContents(request.getParameter("textContents"));
     
     try {
+      Map<String,String> dataMap = MultipartUtil.parse(request);
+      
+      Project project = new Project();
+      project.setProjectNo(Integer.parseInt(dataMap.get("projectNo")));
+      project.setContentNo(Integer.parseInt(dataMap.get("projectNo")));
+      project.setTitle(dataMap.get("projectName"));
+      project.setStartDate(dataMap.get("projectStartDate"));
+      project.setEndDate(dataMap.get("projectEndDate"));
+      project.setContents(dataMap.get("textContents"));
+      project.setLogoPath(dataMap.get("logoPath"));
+      
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 

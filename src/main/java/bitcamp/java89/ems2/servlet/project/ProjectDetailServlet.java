@@ -53,25 +53,24 @@ public class ProjectDetailServlet extends HttpServlet {
       out.println("<form action='update' method='GET'  enctype='multipart/form-data'>");
       out.println("  <div style='height: 70px'></div>");
       out.println("  <div id='title' style='height: 80px;'>");
-      out.println("    <div style='float: left'>");
-      //<!-- 로고 들어갈자리 --> 수정해야함
-      out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
-      out.printf("        %s</span>\n", project.getLogoPath());
+      out.println("    <div style='float: left; margin-left: 10px;'>");
+      //<!-- 로고 들어갈자리 -->
+      out.printf("      <img src='../upload/%s' style='height: 80px;'>\n", project.getLogoPath());
       out.println("    </div>");
-      out.println("    <div style='float: right'>");
-      //<!-- 프로젝트명 들어갈자리 -->
-      out.println("      <span style='margin: 10px; margin-left: 300px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
-      out.printf("        %s</span>\n", project.getTitle());
-      out.println("    </div>");
-      out.println("    <div style='float: right'>");
+      out.println("    <div style='float: right';height: 100px;>");
       //<!-- 작성자 들어갈자리 -->
       out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 16px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
       out.printf("        등록일 [ %s ]</span> <br>\n", project.getRegisterDate().split(" ")[0]);
       out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 16px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
       out.printf("        조회수 %s</span>\n", project.getViewCount());
       out.println("    </div>");
+      out.println("    <div style='float: left';height: 80px;>");
+      //<!-- 프로젝트명 들어갈자리 -->
+      out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
+      out.printf("        %s</span>\n", project.getTitle());
+      out.println("    </div>");
       out.println("  </div>");
-      out.println("  <div id='predata' style='height: 110px;'>");
+      out.println("  <div id='predata' style='margin-top: 30px;height: 110px; clear:both;'>");
       //<!-- 시작일 종료일 -->
       out.println("    <div id='startdate' style='margin-left: 10px; height: 30px;'>");
       //<!-- 시작일 -->
