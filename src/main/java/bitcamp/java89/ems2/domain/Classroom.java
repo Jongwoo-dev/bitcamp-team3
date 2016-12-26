@@ -6,7 +6,7 @@ public class Classroom {
   
   protected int classroomNo;
   protected String name;
-  protected ArrayList<String> pathList;
+  protected ArrayList<ClassroomPhoto> pathList;
   
   
   public int getClassroomNo() {
@@ -21,10 +21,10 @@ public class Classroom {
   public void setName(String name) {
     this.name = name;
   }
-  public ArrayList<String> getPathList() {
+  public ArrayList<ClassroomPhoto> getPathList() {
     return pathList;
   }
-  public void setPathList(ArrayList<String> pathList) {
+  public void setPathList(ArrayList<ClassroomPhoto> pathList) {
     this.pathList = pathList;
   }
 }
