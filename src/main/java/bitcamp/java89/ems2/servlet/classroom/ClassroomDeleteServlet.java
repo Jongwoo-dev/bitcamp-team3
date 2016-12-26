@@ -48,6 +48,11 @@ public class ClassroomDeleteServlet extends HttpServlet {
       
       classroomDao.delete(classroomNo);
       
+//      ClassroomPhotoDao classroomPhotoDao = (ClassroomPhotoDao)this.getServletContext().getAttribute("classroomPhotoDao");
+//      while (classroomPhotoDao.exist(classroomNo)) {
+//        classroomPhotoDao.delete(classroomNo);
+//      }
+      
       out.println("<p>삭제하였습니다.</p>");
       
       rd = request.getRequestDispatcher("/footer");
