@@ -21,7 +21,9 @@ public class ProjectDetailServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
+    
     try {
+      
       int projectNo = Integer.parseInt(request.getParameter("projectNo"));
       String projectMembers = "";
       
@@ -48,12 +50,17 @@ public class ProjectDetailServlet extends HttpServlet {
       }
       
       out.println("<div id='container' style='width: 800px'>");
-      out.println("<form action='update' method='GET'>");
+      out.println("<form action='update' method='GET'  enctype='multipart/form-data'>");
       out.println("  <div style='height: 70px'></div>");
       out.println("  <div id='title' style='height: 80px;'>");
       out.println("    <div style='float: left'>");
-      //<!-- 프로젝트명 들어갈자리 -->
+      //<!-- 로고 들어갈자리 --> 수정해야함
       out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
+      out.printf("        %s</span>\n", project.getLogoPath());
+      out.println("    </div>");
+      out.println("    <div style='float: right'>");
+      //<!-- 프로젝트명 들어갈자리 -->
+      out.println("      <span style='margin: 10px; margin-left: 300px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
       out.printf("        %s</span>\n", project.getTitle());
       out.println("    </div>");
       out.println("    <div style='float: right'>");
