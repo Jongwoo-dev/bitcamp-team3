@@ -50,9 +50,7 @@ public class ClassroomMysqlDao implements ClassroomDao {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select croom.crmno, name" +
-          " from croom" + 
-          " left outer join croom_phot on croom.crmno=croom_phot.crmno");
+          "select crmno, name from croom");
       ResultSet rs = stmt.executeQuery(); ){
       
       while (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
