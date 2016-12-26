@@ -10,6 +10,14 @@ public class Project extends Content {
   protected String contents;
   protected String startDate;
   protected String endDate;
+  protected String logoPath;
+  
+  public String getLogoPath() {
+    return logoPath;
+  }
+  public void setLogoPath(String logoPath) {
+    this.logoPath = logoPath;
+  }
   protected ArrayList<String> projectMemberList;
   
   public int getProjectNo() {
