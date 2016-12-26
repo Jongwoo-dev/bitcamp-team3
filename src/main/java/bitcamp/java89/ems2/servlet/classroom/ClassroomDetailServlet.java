@@ -42,7 +42,7 @@ public class ClassroomDetailServlet extends HttpServlet {
       out.println("<form action='update' method='POST'>");
       
       ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
-      Classroom classroom = classroomDao.getOne(classroomDao);
+      Classroom classroom = classroomDao.getOne(classroomNo);
       
       if (classroom == null) {
         throw new Exception("해당 강의실이 없습니다.");
@@ -73,6 +73,8 @@ public class ClassroomDetailServlet extends HttpServlet {
       out.println("</html>");
       
     } catch (Exception e) {
+      request.setAttribute("error", e);
+      
       RequestDispatcher rd = request.getRequestDispatcher("/error");
       rd.forward(request, response);
       return;
