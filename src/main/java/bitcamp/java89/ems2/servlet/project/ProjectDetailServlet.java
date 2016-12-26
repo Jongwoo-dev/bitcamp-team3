@@ -55,8 +55,7 @@ public class ProjectDetailServlet extends HttpServlet {
       out.println("  <div id='title' style='height: 80px;'>");
       out.println("    <div style='float: left'>");
       //<!-- 로고 들어갈자리 --> 수정해야함
-      out.println("      <span style='margin: 10px; margin-left: 20px; padding: 2px; font-size: 36px; vertical-align: middle; border-radius: 5px; font-weight: bold;'>");
-      out.printf("        %s</span>\n", project.getLogoPath());
+      out.printf("      <img src='../upload/%s' style='height: 100px;'>\n", project.getLogoPath());
       out.println("    </div>");
       out.println("    <div style='float: right'>");
       //<!-- 프로젝트명 들어갈자리 -->
