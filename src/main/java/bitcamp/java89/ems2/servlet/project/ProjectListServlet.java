@@ -57,7 +57,7 @@ public class ProjectListServlet extends HttpServlet {
         out.println("<div  style='width:60px; float:left;'>");
         out.printf("<img src='%s' height='36px' style='background-color:blue; position:relative; margin-left:10px;'>", "../upload/"+project.getLogoPath());
         out.println("</div>");
-        out.println("<div style='background-color:red; float:left; position:relative; padding-left:10px; font-size: 36px; font-weight: bold; width: 620px; height: 80px;'>");
+        out.println("<div style='float:left; position:relative; padding-left:10px; font-size: 36px; font-weight: bold; width: 620px; height: 80px;'>");
         //<!-- 프로젝트 제목 -->
         out.printf("<a href='detail?projectNo=%d'>%s</a>\n", project.getProjectNo(), project.getTitle());
         out.println("</div>");
