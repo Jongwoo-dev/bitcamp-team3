@@ -5,16 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import bitcamp.java89.ems2.dao.ManagerDao;
 import bitcamp.java89.ems2.domain.Manager;
 import bitcamp.java89.ems2.util.DataSource;
 
+@Repository("managerDao")
 public class ManagerMysqlDao implements ManagerDao {
-  DataSource ds;
-  
-  public void setDataSource(DataSource ds) {
-    this.ds = ds;
-  }
+  @Autowired DataSource ds;
 
   public boolean exist(int memberNo) throws Exception {
     Connection con = ds.getConnection(); 

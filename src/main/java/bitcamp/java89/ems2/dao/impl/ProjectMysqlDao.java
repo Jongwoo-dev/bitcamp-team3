@@ -11,12 +11,9 @@ import bitcamp.java89.ems2.domain.Content;
 import bitcamp.java89.ems2.domain.Project;
 import bitcamp.java89.ems2.util.DataSource;
 
+@Repository("projectDao")
 public class ProjectMysqlDao implements ProjectDao {
-  DataSource ds;
-  
-  public void setDataSource(DataSource ds) {
-    this.ds = ds;
-  }
+  @Autowired DataSource ds;
   
   public boolean exist(int projectNo) throws Exception {
     Connection con = ds.getConnection(); 

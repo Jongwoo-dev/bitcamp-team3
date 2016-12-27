@@ -9,12 +9,9 @@ import bitcamp.java89.ems2.dao.TeacherDao;
 import bitcamp.java89.ems2.domain.Teacher;
 import bitcamp.java89.ems2.util.DataSource;
 
+@Repository("teacherDao")
 public class TeacherMysqlDao implements TeacherDao {
-  DataSource ds;
-  
-  public void setDataSource(DataSource ds) {
-    this.ds = ds;
-  }
+  @Autowired DataSource ds;
 
   public boolean exist(int memberNo) throws Exception {
     Connection con = ds.getConnection(); 

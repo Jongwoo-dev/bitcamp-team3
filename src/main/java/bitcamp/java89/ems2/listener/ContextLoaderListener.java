@@ -7,6 +7,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
 import bitcamp.java89.ems2.dao.impl.ClassroomMysqlDao;
 import bitcamp.java89.ems2.dao.impl.ManagerMysqlDao;
 import bitcamp.java89.ems2.dao.impl.MemberMysqlDao;
@@ -21,33 +23,10 @@ public class ContextLoaderListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
-      ServletContext sc = sce.getServletContext();
       
-      DataSource ds = new DataSource();
+      applicationContext = new FileSystemXmlApplicationContext(
+          "file:" + sce.getServletContext().getRealPath("/WEB-INF/conf/application-context.xml"));
       
-      MemberMysqlDao memberDao = new MemberMysqlDao();
-      memberDao.setDataSource(ds);
-      sc.setAttribute("memberDao", memberDao);
-      
-      ManagerMysqlDao managerDao = new ManagerMysqlDao();
-      managerDao.setDataSource(ds);
-      sc.setAttribute("managerDao", managerDao);
-      
-      TeacherMysqlDao teacherDao = new TeacherMysqlDao();
-      teacherDao.setDataSource(ds);
-      sc.setAttribute("teacherDao", teacherDao);
-      
-      StudentMysqlDao studentDao = new StudentMysqlDao();
-      studentDao.setDataSource(ds);
-      sc.setAttribute("studentDao", studentDao);
-      
-      ProjectMysqlDao projectDao = new ProjectMysqlDao();
-      projectDao.setDataSource(ds);
-      sc.setAttribute("projectDao", projectDao);
-      
-      ClassroomMysqlDao classroomDao = new ClassroomMysqlDao();
-      classroomDao.setDataSource(ds);
-      sc.setAttribute("classroomDao", classroomDao);
       
       System.out.println("ContextLoaderListener.init() 실행 완료!");
       

@@ -9,12 +9,9 @@ import bitcamp.java89.ems2.dao.StudentDao;
 import bitcamp.java89.ems2.domain.Student;
 import bitcamp.java89.ems2.util.DataSource;
 
+@Repository("studentDao")
 public class StudentMysqlDao implements StudentDao {
-  DataSource ds;
-  
-  public void setDataSource(DataSource ds) {
-    this.ds = ds;
-  }
+  @Autowired DataSource ds;
 
   public ArrayList<Student> getList() throws Exception {
     ArrayList<Student> list = new ArrayList<>();

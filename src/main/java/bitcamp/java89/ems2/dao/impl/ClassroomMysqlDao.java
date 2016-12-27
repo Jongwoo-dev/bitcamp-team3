@@ -7,17 +7,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
 import bitcamp.java89.ems2.domain.Photo;
 import bitcamp.java89.ems2.util.DataSource;
 
+@Repository("classroomDao")
 public class ClassroomMysqlDao implements ClassroomDao {
-  DataSource ds;
-  
-  public void setDataSource(DataSource ds) {
-    this.ds = ds;
-  }
+  @Autowired DataSource ds;
 
   public boolean exist(int classroomNo) throws Exception {
     Connection con = ds.getConnection(); 
