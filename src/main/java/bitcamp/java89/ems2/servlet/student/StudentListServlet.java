@@ -13,15 +13,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.StudentDao;
 import bitcamp.java89.ems2.domain.Student;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 
 @WebServlet("/student/list")
 public class StudentListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
-
+  
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
+
     try {
+      
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
   
@@ -35,24 +38,24 @@ public class StudentListServlet extends HttpServlet {
       
       // HeaderServlet에게 머리말 HTML 생성을 요청한다.
       RequestDispatcher rd = request.getRequestDispatcher("/header");
-      rd.include(request, response);
+      rd.include(request, response); 
       
       out.println("<h1>학생 정보</h1>");
-
-      StudentDao studentDao = (StudentDao)this.getServletContext().getAttribute("studentDao");
+      
+      StudentDao studentDao = (StudentDao)ContextLoaderListener.applicationContext.getBean("studentDao");
       ArrayList<Student> list = studentDao.getList();
 
       out.println("<a href='form.html'>추가</a><br>");
       out.println("<table border='1'>");
       out.println("<tr>");
-      out.println("  <th>회원번호</th>");
-      out.println("  <th>이름</th>");
-      out.println("  <th>전화</th>");
-      out.println("  <th>재직</th>");
-      out.println("  <th>최종학력</th>");
-      out.println("  <th>학교명</th>");
+      out.println("<th>회원번호</th>");
+      out.println("<th>이름</th>");
+      out.println("<th>전화</th>");
+      out.println("<th>재직</th>");
+      out.println("<th>최종학력</th>");
+      out.println("<th>학교명</th>");
       out.println("</tr>");
-      
+
       for (Student student : list) {
         out.println("<tr> ");
         out.printf("  <td>%d</td>"
@@ -61,27 +64,29 @@ public class StudentListServlet extends HttpServlet {
             + "<td>%b</td>"
             + "<td>%s</td>"
             + "<td>%s</td>\n",
-          student.getMemberNo(),
-          student.getName(),
-          student.getTel(),
-          student.isWorking(),
-          student.getGrade(),
-          student.getSchoolName());
+            student.getMemberNo(),
+            student.getName(),
+            student.getTel(),
+            student.isWorking(),
+            student.getGrade(),
+            student.getSchoolName());
         out.println("</tr>");
       }
-      
+
       out.println("</table>");
       
-      // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
+   // HeaderServlet에게 꼬리말 HTML 생성을 요청한다.
       rd = request.getRequestDispatcher("/footer");
-      rd.include(request, response);
+      rd.include(request, response); 
       
       out.println("</body>");
       out.println("</html>");
       
     } catch (Exception e) {
+      request.setAttribute("error", e);
+      
       RequestDispatcher rd = request.getRequestDispatcher("/error");
-      rd.forward(request, response);
+      rd.forward(request, response); 
       return;
     }
   }

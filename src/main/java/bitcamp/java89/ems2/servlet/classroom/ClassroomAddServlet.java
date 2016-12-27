@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
 import bitcamp.java89.ems2.domain.Photo;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/classroom/add")
@@ -55,7 +56,7 @@ public class ClassroomAddServlet extends HttpServlet {
       
       out.println("<h1>등록 결과.</h1>");
 
-      ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
+      ClassroomDao classroomDao = (ClassroomDao)ContextLoaderListener.applicationContext.getBean("classroomDao");
       
       classroomDao.insert(classroom);
 

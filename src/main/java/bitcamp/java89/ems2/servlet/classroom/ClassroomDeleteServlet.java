@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ClassroomDao;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 
 @WebServlet("/classroom/delete")
 public class ClassroomDeleteServlet extends HttpServlet {
@@ -40,7 +41,7 @@ public class ClassroomDeleteServlet extends HttpServlet {
       
       out.println("<h1>삭제 결과</h1>");
 
-      ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
+      ClassroomDao classroomDao = (ClassroomDao)ContextLoaderListener.applicationContext.getBean("classroomDao");
 
       if (!classroomDao.exist(classroomNo)) {
         throw new Exception("강의실을 찾지 못했습니다.");

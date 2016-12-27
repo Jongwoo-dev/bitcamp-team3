@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/project/update")
@@ -28,7 +29,7 @@ public class ProjectUpdateServlet extends HttpServlet {
       int projectNo = Integer.parseInt(request.getParameter("projectNo"));
       String projectMembers = request.getParameter("projectMember");
       
-      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+      ProjectDao projectDao = (ProjectDao)ContextLoaderListener.applicationContext.getBean("projectDao");
       Project project = projectDao.getOne(projectNo);
 
       String title = project.getTitle();

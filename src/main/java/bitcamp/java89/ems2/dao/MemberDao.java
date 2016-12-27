@@ -8,4 +8,5 @@ public interface MemberDao {
   void update(Member member) throws Exception;
   void delete(int memberNo) throws Exception;
   Member getOne(String email) throws Exception;
+  Member getOne(String email, String password) throws Exception;  // 업데이트 부분
 }

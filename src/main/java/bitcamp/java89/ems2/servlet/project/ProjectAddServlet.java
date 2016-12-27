@@ -15,6 +15,7 @@ import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.domain.Project;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/project/add")
@@ -55,14 +56,14 @@ public class ProjectAddServlet extends HttpServlet {
       
       out.println("<h1>등록 결과</h1>");
     
-      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+      ProjectDao projectDao = (ProjectDao)ContextLoaderListener.applicationContext.getBean("projectDao");
       
       // 원랜 ContentDao 를 읽어와서 그쪽 인서트 메서드로 입력 구현을 해야하나 그쪽이 완료가 안된 관계로
       // 일단은 ProjectDao에서 구현함. 추후 ContentDao로 구현이 되면 content insert 부분 교체 
       //ContentDao contentDao = (ContentDao)this.getServletContext().getAttribute("contentDao");
       
       // 해당 유저가 존재하는지 체크
-      MemberDao memberDao = (MemberDao)this.getServletContext().getAttribute("memberDao");
+      MemberDao memberDao = (MemberDao)ContextLoaderListener.applicationContext.getBean("memberDao");
       if (!memberDao.exist(writerUserEmail)) { 
         // 작성자가 존재하지 않는다면
         throw new Exception("작성자의 아이디가 존재하지 않습니다.");

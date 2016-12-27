@@ -27,6 +27,4 @@ public class Manager extends Member {
   }
   
   
-  
-  
 }

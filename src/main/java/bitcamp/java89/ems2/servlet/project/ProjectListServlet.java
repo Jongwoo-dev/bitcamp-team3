@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 
 @WebServlet("/project/list")
 public class ProjectListServlet extends HttpServlet {
@@ -46,7 +47,7 @@ public class ProjectListServlet extends HttpServlet {
       out.println("</div>");
       out.println("<hr>");
       
-      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+      ProjectDao projectDao = (ProjectDao)ContextLoaderListener.applicationContext.getBean("projectDao");
       ArrayList<Project> list = projectDao.getList();
       
       for (Project project : list) {

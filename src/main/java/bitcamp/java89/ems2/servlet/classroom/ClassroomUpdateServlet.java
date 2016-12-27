@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
 import bitcamp.java89.ems2.domain.Photo;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/classroom/update")
@@ -53,7 +54,7 @@ public class ClassroomUpdateServlet extends HttpServlet {
       rd.include(request, response);
       
       out.println("<h1>변경 결과</h1>");
-      ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
+      ClassroomDao classroomDao = (ClassroomDao)ContextLoaderListener.applicationContext.getBean("classroomDao");
 
       if (!classroomDao.exist(classroom.getClassroomNo())) {
         throw new Exception("강의실을 찾지 못했습니다.");

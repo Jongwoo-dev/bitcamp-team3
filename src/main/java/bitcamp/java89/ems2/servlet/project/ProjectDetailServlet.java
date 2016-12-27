@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Project;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 
 @WebServlet("/project/detail")
 public class ProjectDetailServlet extends HttpServlet {
@@ -41,7 +42,7 @@ public class ProjectDetailServlet extends HttpServlet {
       RequestDispatcher rd = request.getRequestDispatcher("/header");
       rd.include(request, response);
             
-      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+      ProjectDao projectDao = (ProjectDao)ContextLoaderListener.applicationContext.getBean("projectDao");
       
       Project project = projectDao.getOne(projectNo);
       

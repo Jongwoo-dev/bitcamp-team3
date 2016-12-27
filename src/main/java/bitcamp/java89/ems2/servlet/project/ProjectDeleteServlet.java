@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ProjectDao;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 
 @WebServlet("/project/delete")
 public class ProjectDeleteServlet extends HttpServlet {
@@ -39,7 +40,7 @@ public class ProjectDeleteServlet extends HttpServlet {
       
       out.println("<h1>삭제 결과</h1>");
       
-      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+      ProjectDao projectDao = (ProjectDao)ContextLoaderListener.applicationContext.getBean("projectDao");
       
       if (!projectDao.exist(projectNo)) {
         throw new Exception("프로젝트를 찾지 못했습니다.");

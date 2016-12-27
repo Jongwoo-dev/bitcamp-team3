@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
 import bitcamp.java89.ems2.domain.Photo;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 
 @WebServlet("/classroom/detail")
 public class ClassroomDetailServlet extends HttpServlet {
@@ -43,7 +44,7 @@ public class ClassroomDetailServlet extends HttpServlet {
       out.println("<h1>강의실 정보</h1>");
       out.println("<form action='update' method='POST' enctype='multipart/form-data'>");
       
-      ClassroomDao classroomDao = (ClassroomDao)this.getServletContext().getAttribute("classroomDao");
+      ClassroomDao classroomDao = (ClassroomDao)ContextLoaderListener.applicationContext.getBean("classroomDao");
       Classroom classroom = classroomDao.getOne(classroomNo);
       
       if (classroom == null) {

@@ -14,15 +14,17 @@ import bitcamp.java89.ems2.dao.ManagerDao;
 import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.dao.StudentDao;
 import bitcamp.java89.ems2.dao.TeacherDao;
+import bitcamp.java89.ems2.listener.ContextLoaderListener;
 
 @WebServlet("/teacher/delete")
 public class TeacherDeleteServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
-
-  @Override
+  
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
+    
     try {
+        
       int memberNo = Integer.parseInt(request.getParameter("memberNo"));
       
       response.setContentType("text/html;charset=UTF-8");
@@ -37,23 +39,23 @@ public class TeacherDeleteServlet extends HttpServlet {
       out.println("</head>");
       out.println("<body>");
       
-      // HeaderServlet에게 머리말 HTML 생성을 요청한다.
+   // HeaderServlet에게 머리말 HTML 생성을 요청한다.
       RequestDispatcher rd = request.getRequestDispatcher("/header");
-      rd.include(request, response);
+      rd.include(request, response); 
       
       out.println("<h1>삭제 결과</h1>");
-
-      TeacherDao teacherDao = (TeacherDao)this.getServletContext().getAttribute("teacherDao");
     
+      TeacherDao teacherDao = (TeacherDao)ContextLoaderListener.applicationContext.getBean("teacherDao");
+      
       if (!teacherDao.exist(memberNo)) {
         throw new Exception("강사를 찾지 못했습니다.");
       }
       
       teacherDao.delete(memberNo);
-
-      MemberDao memberDao = (MemberDao)this.getServletContext().getAttribute("memberDao");
-      StudentDao studentDao = (StudentDao)this.getServletContext().getAttribute("studentDao");
-      ManagerDao managerDao = (ManagerDao)this.getServletContext().getAttribute("managerDao");
+      
+      MemberDao memberDao = (MemberDao)ContextLoaderListener.applicationContext.getBean("memberDao");
+      StudentDao studentDao = (StudentDao)ContextLoaderListener.applicationContext.getBean("studentDao");
+      ManagerDao managerDao = (ManagerDao)ContextLoaderListener.applicationContext.getBean("managerDao");
       
       if (!studentDao.exist(memberNo) && !managerDao.exist(memberNo)) {
         memberDao.delete(memberNo);
@@ -61,17 +63,21 @@ public class TeacherDeleteServlet extends HttpServlet {
       
       out.println("<p>삭제하였습니다.</p>");
       
-      // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
+      // HeaderServlet에게 꼬리말 HTML 생성을 요청한다.
       rd = request.getRequestDispatcher("/footer");
-      rd.include(request, response);
+      rd.include(request, response); 
       
       out.println("</body>");
       out.println("</html>");
       
     } catch (Exception e) {
+      request.setAttribute("error", e);
+      
       RequestDispatcher rd = request.getRequestDispatcher("/error");
-      rd.forward(request, response);
+      rd.forward(request, response); 
       return;
     }
-  }  
+    
+    
+  }
 }
