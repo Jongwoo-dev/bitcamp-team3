@@ -109,7 +109,7 @@ public class ClassroomMysqlDao implements ClassroomDao {
 
       while (rs.next()) { 
         Photo croomPhoto = new Photo();
-        croomPhoto.setOwnerId(classroomNo);
+        croomPhoto.setOwnerNo(classroomNo);
         croomPhoto.setNo(rs.getInt("cpno"));
         croomPhoto.setFilePath(rs.getString("path"));
         classroomPathList.add(croomPhoto);
@@ -162,7 +162,7 @@ public class ClassroomMysqlDao implements ClassroomDao {
         stmt.executeUpdate();
         ResultSet keyRS = stmt.getGeneratedKeys();
         keyRS.next();
-        photo.setOwnerId(keyRS.getInt(1));
+        photo.setOwnerNo(keyRS.getInt(1));
         keyRS.close();
       }
     } finally {
