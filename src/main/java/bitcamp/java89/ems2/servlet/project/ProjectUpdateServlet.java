@@ -202,7 +202,7 @@ public class ProjectUpdateServlet extends HttpServlet {
 
       out.println("<h1>변경 결과</h1>");
 
-      ProjectDao projectDao = (ProjectDao)this.getServletContext().getAttribute("projectDao");
+      ProjectDao projectDao = (ProjectDao)ContextLoaderListener.applicationContext.getBean("projectDao");
       
       if (!projectDao.exist(project.getProjectNo())) {
         throw new Exception("해당 프로젝트가 없습니다.");
