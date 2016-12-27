@@ -13,10 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ClassroomDao;
-import bitcamp.java89.ems2.dao.TeacherDao;
 import bitcamp.java89.ems2.domain.Classroom;
 import bitcamp.java89.ems2.domain.ClassroomPhoto;
-import bitcamp.java89.ems2.domain.Teacher;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/classroom/update")
@@ -32,6 +30,24 @@ public class ClassroomUpdateServlet extends HttpServlet {
       Classroom classroom = new Classroom();
       classroom.setClassroomNo(Integer.parseInt(dataMap.get("classroomNo")));
       classroom.setName(dataMap.get("name"));
+      
+      ArrayList<ClassroomPhoto> photoPathList = new ArrayList<>();
+      
+      ClassroomPhoto crPhoto;
+      
+      crPhoto = new ClassroomPhoto();
+      crPhoto.setPath(dataMap.get("photoPath1"));
+      photoPathList.add(crPhoto);
+      
+      crPhoto = new ClassroomPhoto();
+      crPhoto.setPath(dataMap.get("photoPath2"));
+      photoPathList.add(crPhoto);
+      
+      crPhoto = new ClassroomPhoto();
+      crPhoto.setPath(dataMap.get("photoPath3"));
+      photoPathList.add(crPhoto);
+      
+      classroom.setPathList(photoPathList);
       
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
