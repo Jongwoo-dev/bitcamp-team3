@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
-import bitcamp.java89.ems2.domain.ClassroomPhoto;
+import bitcamp.java89.ems2.domain.Photo;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/classroom/update")
@@ -31,23 +31,10 @@ public class ClassroomUpdateServlet extends HttpServlet {
       classroom.setClassroomNo(Integer.parseInt(dataMap.get("classroomNo")));
       classroom.setName(dataMap.get("name"));
       
-      ArrayList<ClassroomPhoto> photoPathList = new ArrayList<>();
-      
-      ClassroomPhoto crPhoto;
-      
-      crPhoto = new ClassroomPhoto();
-      crPhoto.setPath(dataMap.get("photoPath1"));
-      photoPathList.add(crPhoto);
-      
-      crPhoto = new ClassroomPhoto();
-      crPhoto.setPath(dataMap.get("photoPath2"));
-      photoPathList.add(crPhoto);
-      
-      crPhoto = new ClassroomPhoto();
-      crPhoto.setPath(dataMap.get("photoPath3"));
-      photoPathList.add(crPhoto);
-      
-      classroom.setPathList(photoPathList);
+      ArrayList<Photo> photoList = new ArrayList<>();
+      photoList.add(new Photo(dataMap.get("photoPath1")));
+      photoList.add(new Photo(dataMap.get("photoPath2")));
+      photoList.add(new Photo(dataMap.get("photoPath3")));
       
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
@@ -72,12 +59,10 @@ public class ClassroomUpdateServlet extends HttpServlet {
         throw new Exception("강의실을 찾지 못했습니다.");
       }
       
+      classroom.setPhotoList(photoList);
+      
       classroomDao.update(classroom);
-      
-      for (ClassroomPhoto croomPhoto : classroom.getPathList()) {
-        classroomDao.updateClassroomPhoto(croomPhoto);
-      }
-      
+            
       out.println("<p>변경 하였습니다.</p>");
       
       // FooterServlet에게 꼬리말 HTML 생성을 요청한다.

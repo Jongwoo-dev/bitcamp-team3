@@ -9,12 +9,13 @@ public interface ClassroomDao {
   boolean exist(int classroomNo) throws Exception;
   ArrayList<Classroom> getList() throws Exception;
   void insert(Classroom classroom) throws Exception;
-  void insertClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception;
+  public void insertPhotoList(Classroom classroom) throws Exception;
   void delete(int classroomNo) throws Exception;
   Classroom getOne(int classroomNo) throws Exception;
   
   //임시사용
   void deletePhoto(int classroomNo) throws Exception;
   void update(Classroom classroom) throws Exception;
-  void updateClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception;
+  void updatePhotoList(Classroom classroom) throws Exception ;
+  
 }

@@ -5,10 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
-import bitcamp.java89.ems2.domain.ClassroomPhoto;
+import bitcamp.java89.ems2.domain.Photo;
 import bitcamp.java89.ems2.util.DataSource;
 
 public class ClassroomMysqlDao implements ClassroomDao {
@@ -68,7 +69,7 @@ public class ClassroomMysqlDao implements ClassroomDao {
   
   public Classroom getOne(int classroomNo) throws Exception {
     Connection con = ds.getConnection(); 
-    ArrayList<ClassroomPhoto> croomPath = getClassroomPath(classroomNo);
+    ArrayList<Photo> photoList = getClassroomPath(classroomNo);
     try (
       PreparedStatement stmt = con.prepareStatement(
           "select name"
@@ -82,7 +83,7 @@ public class ClassroomMysqlDao implements ClassroomDao {
         Classroom classroom = new Classroom();
         classroom.setClassroomNo(classroomNo);
         classroom.setName(rs.getString("name"));
-        classroom.setPathList(croomPath);
+        classroom.setPhotoList(photoList);
         rs.close();
         return classroom;
         
@@ -94,8 +95,8 @@ public class ClassroomMysqlDao implements ClassroomDao {
       ds.returnConnection(con);
     }
   } 
-  public ArrayList<ClassroomPhoto> getClassroomPath(int classroomNo) throws Exception {
-    ArrayList<ClassroomPhoto> classroomPathList = new ArrayList<>();;
+  public ArrayList<Photo> getClassroomPath(int classroomNo) throws Exception {
+    ArrayList<Photo> classroomPathList = new ArrayList<>();;
     Connection con = ds.getConnection();
     try (
         PreparedStatement stmt = con.prepareStatement(
@@ -106,11 +107,11 @@ public class ClassroomMysqlDao implements ClassroomDao {
         stmt.setInt(1, classroomNo);
         ResultSet rs = stmt.executeQuery();
 
-      while (rs.next()) { // 잘 모르겠는 부분
-        ClassroomPhoto croomPhoto = new ClassroomPhoto();
-        croomPhoto.setClassroomNo(classroomNo);
-        croomPhoto.setClassroomPhotoNo(rs.getInt("cpno"));
-        croomPhoto.setPath(rs.getString("path"));
+      while (rs.next()) { 
+        Photo croomPhoto = new Photo();
+        croomPhoto.setOwnerId(classroomNo);
+        croomPhoto.setNo(rs.getInt("cpno"));
+        croomPhoto.setFilePath(rs.getString("path"));
         classroomPathList.add(croomPhoto);
       }
     } finally {
@@ -135,28 +136,35 @@ public class ClassroomMysqlDao implements ClassroomDao {
       keyRS.next();
       classroom.setClassroomNo(keyRS.getInt(1));
       keyRS.close();
-
+      
+      this.insertPhotoList(classroom);
     } finally {
       ds.returnConnection(con);
     }
   }
 
   @Override
-  public void insertClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception {
+  public void insertPhotoList(Classroom classroom) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
           "insert into croom_phot(crmno,path) values(?,?)",
           Statement.RETURN_GENERATED_KEYS); ) {
       
-      stmt.setInt(1, classroomPhoto.getClassroomNo());
-      stmt.setString(2, classroomPhoto.getPath());
-      stmt.executeUpdate();
+      List<Photo> photoList = classroom.getPhotoList();
       
-      ResultSet keyRS = stmt.getGeneratedKeys();
-      keyRS.next();
-      classroomPhoto.setClassroomPhotoNo(keyRS.getInt(1));
-      keyRS.close();
+      for (Photo photo : photoList) {
+        if (photo.getFilePath() == null) {
+          continue;
+        }
+        stmt.setInt(1, classroom.getClassroomNo());
+        stmt.setString(2, photo.getFilePath());
+        stmt.executeUpdate();
+        ResultSet keyRS = stmt.getGeneratedKeys();
+        keyRS.next();
+        photo.setOwnerId(keyRS.getInt(1));
+        keyRS.close();
+      }
     } finally {
       ds.returnConnection(con);
     }
@@ -205,13 +213,17 @@ public class ClassroomMysqlDao implements ClassroomDao {
       stmt.setInt(2, classroom.getClassroomNo());
       stmt.executeUpdate();
       
+      deletePhoto(classroom.getClassroomNo());
+      insertPhotoList(classroom);
+      
+      this.updatePhotoList(classroom);
     } finally {
       ds.returnConnection(con);
     }
   }
 
   @Override
-  public void updateClassroomPhoto(ClassroomPhoto classroomPhoto) throws Exception {
+  public void updatePhotoList(Classroom classroom) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
@@ -219,9 +231,16 @@ public class ClassroomMysqlDao implements ClassroomDao {
           + " path=?"
           + " where cpno=?");) {
       
-      stmt.setString(1, classroomPhoto.getPath());
-      stmt.setInt(2, classroomPhoto.getClassroomPhotoNo());
-      stmt.executeUpdate();
+      List<Photo> photoList = classroom.getPhotoList();
+      
+      for (Photo photo : photoList) {
+        if (photo.getFilePath() == null) {
+          continue;
+        }
+        stmt.setString(1, photo.getFilePath());
+        stmt.setInt(2, (photo.getNo()));
+        stmt.executeUpdate();
+      }
       
     } finally {
       ds.returnConnection(con);

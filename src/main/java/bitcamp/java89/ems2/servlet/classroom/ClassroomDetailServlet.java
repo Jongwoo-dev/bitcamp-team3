@@ -2,6 +2,7 @@ package bitcamp.java89.ems2.servlet.classroom;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.ClassroomDao;
 import bitcamp.java89.ems2.domain.Classroom;
+import bitcamp.java89.ems2.domain.Photo;
 
 @WebServlet("/classroom/detail")
 public class ClassroomDetailServlet extends HttpServlet {
@@ -53,29 +55,21 @@ public class ClassroomDetailServlet extends HttpServlet {
           + "<input name='name' type='text' value='%s'></td></tr>\n", 
           classroom.getName());
       
-      out.print("<tr><th>사진1</th><td>");
-      try {
-        out.printf("<img src='../upload/%s' style='height: 80px;'>", classroom.getPathList().get(0).getPath());        
-      } catch (Exception e) {}
-      out.println("<input name='photoPath1' type='file'></td></tr>");
+      List<Photo> photoList = classroom.getPhotoList();
+      for (int i = 0; i < 3; i++) {
+        out.printf("<tr><th>사진</th><td>"
+            + "<img src='../upload/%s' height='80px'>"
+            + "<input name='photoPath%d' type='file'></td></tr>",
+            (i < photoList.size()) ? photoList.get(i).getFilePath() : null,
+            i + 1 );
+      }
       
-      out.print("<tr><th>사진2</th><td>");
-      try {
-        out.printf("<img src='../upload/%s' style='height: 80px;'>", classroom.getPathList().get(1).getPath());        
-      } catch (Exception e) {}
-      out.println("<input name='photoPath2' type='file'></td></tr>");
-      
-      out.print("<tr><th>사진3</th><td>");
-      try {
-        out.printf("<img src='../upload/%s' style='height: 80px;'>", classroom.getPathList().get(2).getPath());        
-      } catch (Exception e) {}
-      out.println("<input name='photoPath3' type='file'></td></tr>");
       
       out.println("</table>");
       
       out.println("<button type='submit'>변경</button>");
       out.printf(" <a href='delete?classroomNo=%s'>삭제</a>\n", classroom.getClassroomNo());
-      out.printf("<input type='hidden' name='memberNo' value='%d'>\n", classroom.getClassroomNo());
+      out.printf("<input type='hidden' name='classroomNo' value='%d'>\n", classroom.getClassroomNo());
       
       out.println(" <a href='list'>목록</a>");
       out.println("</form>");
