@@ -106,7 +106,7 @@ public class ProjectUpdateServlet extends HttpServlet {
       out.println("        <div id='teamselect'");
       out.println("          style='float: right; height: 100px; width: 200px'>");
       out.println("          <input type='button' value='팀원선택'");
-      out.println("            onclick=\"location.href='../proj_memb/list'\"");
+      out.println("            onclick=\"location.href='../projectMember/list'\"");
       out.println("            style='margin: 10px; height: 80px; width: 180px; border: 0px; background-color: #bebebe; font-size: 20px; font-weight: bold; color: white; border-radius: 5px;'>");
       out.println("        </div>");
       out.println("        <div id='projectMemberListDiv' style='margin: 10px; height: 30px;'>");
