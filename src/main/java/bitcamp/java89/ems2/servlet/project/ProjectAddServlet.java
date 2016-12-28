@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.dao.ProjectDao;
 import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.domain.Project;
@@ -37,9 +36,6 @@ public class ProjectAddServlet extends HttpServlet {
       
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
-      
-      
-      String writerUserEmail = dataMap.get("userEmail");
   
       out.println("<!DOCTYPE html>");
       out.println("<html>");
@@ -63,14 +59,12 @@ public class ProjectAddServlet extends HttpServlet {
       //ContentDao contentDao = (ContentDao)this.getServletContext().getAttribute("contentDao");
       
       // 해당 유저가 존재하는지 체크
-      MemberDao memberDao = (MemberDao)ContextLoaderListener.applicationContext.getBean("memberDao");
-      if (!memberDao.exist(writerUserEmail)) { 
-        // 작성자가 존재하지 않는다면
-        throw new Exception("작성자의 아이디가 존재하지 않습니다.");
-      } 
+      Member writer = (Member)request.getSession().getAttribute("member");
+      if (writer == null) {
+        throw new Exception("로그인이 필요합니다.");
+      }
       
       // 작성자가 존재하면 해당 이메일의 멤버번호로 프로젝트 등록자를 설정 
-      Member writer = memberDao.getOne(writerUserEmail);
       project.setMemberNo(writer.getMemberNo());
       projectDao.insertContent(project);
       

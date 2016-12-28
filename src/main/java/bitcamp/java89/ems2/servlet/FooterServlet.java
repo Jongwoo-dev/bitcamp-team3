@@ -14,18 +14,17 @@ public class FooterServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response) 
-      throws ServletException, IOException {
+  protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
-
-    out.println("<div id='footer' "
-        + "style='background-color:gray; height:20px; margin-top:20px;'>");
-    out.println("<div style='color:white; padding-top:2px; font-family:돋움체,sans-serif;"
-        + " text-align:center; font-weight:lighter;'>");
+    
+    out.println("<div id ='footer'"
+        + " style='background-color:gray; height: 20px; margin-top:20px;'>");
+    out.println("<div style='color:white; padding-top:2px; font-family: 돋움체, sans-serif;"
+        + " text-align:center; font-weight:lighter'>");
     out.println("@2016 비트캠프 자바89기");
     out.println("</div>");
     out.println("</div>");
-  }  
+  }
 }
